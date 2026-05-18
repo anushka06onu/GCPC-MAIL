@@ -848,7 +848,7 @@
   <!-- Header -->
   <header>
     <div class="brand-container">
-      <img src="/assets/gcpc-logo.png" class="brand-logo" alt="GCPC Logo">
+      <img src="assets/gcpc-logo.png" class="brand-logo" alt="GCPC Logo">
       <div class="brand-text">DIU GCPC</div>
       <div class="brand-tag">Email Suite</div>
     </div>
@@ -1054,17 +1054,17 @@
 
         <div class="form-group">
           <label for="logo-gcpc-url">Hosted Club Logo URL</label>
-          <input type="url" id="logo-gcpc-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/gcpc-logo.png">
+          <input type="url" id="logo-gcpc-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/gcpc-logo.png">
         </div>
 
         <div class="form-group">
           <label for="logo-varsity-url">Hosted Varsity Logo URL</label>
-          <input type="url" id="logo-varsity-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/university-logo.png">
+          <input type="url" id="logo-varsity-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/university-logo.png">
         </div>
 
         <div class="form-group">
           <label for="logo-cse-url">Hosted CSE Dept Logo URL</label>
-          <input type="url" id="logo-cse-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/cse-logo.jpeg">
+          <input type="url" id="logo-cse-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/cse-logo.jpeg">
         </div>
       </div>
       
@@ -1880,6 +1880,15 @@
 
     /* 🌙 GORGEOUS NATIVE DARK & LIGHT MODE FRIENDLY OVERRIDES */
     @media (prefers-color-scheme: dark) {
+      /* Native background inversion for dark mode environments */
+      body, center, .main-bg {
+        background-color: #070b13 !important;
+      }
+      .responsive-table, .main-body-card, .mobile-padding {
+        background-color: #0d1526 !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      
       /* Keep the brand logo pills solid white so transparent letters are fully readable */
       .white-capsule {
         background-color: #ffffff !important;
