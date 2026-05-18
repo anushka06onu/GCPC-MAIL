@@ -334,7 +334,7 @@
       color: var(--text-main);
     }
 
-    .viewport-controls {
+    .viewport-controls, .theme-controls {
       display: flex;
       background: rgba(7, 11, 19, 0.6);
       border-radius: 8px;
@@ -342,7 +342,7 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .viewport-btn {
+    .viewport-btn, .theme-toggle-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
@@ -357,12 +357,12 @@
       transition: all 0.2s ease;
     }
 
-    .viewport-btn svg {
+    .viewport-btn svg, .theme-toggle-btn svg {
       width: 14px;
       height: 14px;
     }
 
-    .viewport-btn.active {
+    .viewport-btn.active, .theme-toggle-btn.active {
       background: var(--gcpc-blue);
       color: white;
       box-shadow: 0 2px 8px rgba(10, 48, 122, 0.4);
@@ -1087,6 +1087,17 @@
               Mobile
             </button>
           </div>
+          <div class="theme-controls" style="margin-left: 0.75rem;">
+            <button class="theme-toggle-btn active" id="theme-btn-auto" onclick="setPreviewTheme('auto')">
+              🔌 Auto
+            </button>
+            <button class="theme-toggle-btn" id="theme-btn-light" onclick="setPreviewTheme('light')">
+              ☀️ Light Mode
+            </button>
+            <button class="theme-toggle-btn" id="theme-btn-dark" onclick="setPreviewTheme('dark')">
+              🌙 Dark Mode
+            </button>
+          </div>
         </div>
         
         <div class="preview-tabs">
@@ -1347,6 +1358,109 @@
         btnDesktop.classList.remove('active');
         btnMobile.classList.add('active');
       }
+    }
+
+    // Interactive Theme Previewer Simulation
+    let activePreviewTheme = 'auto';
+
+    function setPreviewTheme(theme) {
+      activePreviewTheme = theme;
+      
+      document.getElementById('theme-btn-auto').classList.remove('active');
+      document.getElementById('theme-btn-light').classList.remove('active');
+      document.getElementById('theme-btn-dark').classList.remove('active');
+      
+      document.getElementById(`theme-btn-${theme}`).classList.add('active');
+      
+      applyPreviewTheme();
+    }
+
+    function applyPreviewTheme() {
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc) return;
+      
+      const existing = doc.getElementById('theme-override');
+      if (existing) {
+        existing.remove();
+      }
+      
+      if (activePreviewTheme === 'auto') {
+        return; 
+      }
+      
+      const style = doc.createElement('style');
+      style.id = 'theme-override';
+      style.type = 'text/css';
+      
+      if (activePreviewTheme === 'light') {
+        style.innerHTML = `
+          /* Force Light Mode Overrides */
+          body, center, .main-bg {
+            background-color: #f1f5f9 !important;
+          }
+          .responsive-table, .main-body-card, .mobile-padding {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+          }
+          .text-slate {
+            color: #0f172a !important;
+          }
+          .text-muted {
+            color: #475569 !important;
+          }
+          .text-gold {
+            color: #e08b00 !important;
+          }
+          .link-blue {
+            color: #e08b00 !important;
+          }
+          .hero-title-text {
+            color: #ffffff !important;
+          }
+          .hero-subtitle-text {
+            color: #e08b00 !important;
+          }
+          .white-capsule, .white-capsule td {
+            background-color: #ffffff !important;
+            background: linear-gradient(#ffffff, #ffffff) !important;
+          }
+        `;
+      } else if (activePreviewTheme === 'dark') {
+        style.innerHTML = `
+          /* Force Dark Mode Overrides */
+          body, center, .main-bg {
+            background-color: #070b13 !important;
+          }
+          .responsive-table, .main-body-card, .mobile-padding {
+            background-color: #0d1526 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+          }
+          .text-slate {
+            color: #f1f5f9 !important;
+          }
+          .text-muted {
+            color: #94a3b8 !important;
+          }
+          .text-gold {
+            color: #fbbf24 !important;
+          }
+          .link-blue {
+            color: #fbbf24 !important;
+          }
+          .hero-title-text {
+            color: #ffffff !important;
+          }
+          .hero-subtitle-text {
+            color: #fbbf24 !important;
+          }
+          .white-capsule, .white-capsule td {
+            background-color: #ffffff !important;
+            background: linear-gradient(#ffffff, #ffffff) !important;
+          }
+        `;
+      }
+      
+      doc.head.appendChild(style);
     }
 
     // Tab switcher
@@ -2141,6 +2255,11 @@
       // Inject compiled HTML into iframe safely
       iframe.srcdoc = html;
 
+      // Ensure theme overrides are reapplied after content loads
+      iframe.onload = function() {
+        applyPreviewTheme();
+      };
+      
       // Update exported code display panel
       if (state.activeTab === 'code') {
         codeOutput.textContent = html;
