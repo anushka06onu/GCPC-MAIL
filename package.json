@@ -1,0 +1,22 @@
+{
+  "name": "gcpc-mail-builder",
+  "version": "1.0.0",
+  "description": "Interactive HTML Email Template Builder and Live Previewer for Girls' Computer Programming Club (GCPC) DIU",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "keywords": [
+    "gcpc",
+    "email",
+    "template",
+    "builder",
+    "previewer",
+    "responsive"
+  ],
+  "author": "Antigravity & Anushka",
+  "license": "MIT"
+}

@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GCPC Email Template Builder & Previewer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #070b13;
+      --bg-card: rgba(13, 21, 38, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --gcpc-blue: #0a307a;
+      --gcpc-blue-light: #2563eb;
+      --gcpc-gold: #e08b00;
+      --gcpc-gold-light: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glass-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(7, 11, 19, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gcpc-gold);
+    }
+
+    /* Header Bar */
+    header {
+      background: linear-gradient(135deg, rgba(10, 48, 122, 0.95) 0%, rgba(7, 11, 19, 0.98) 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      height: 36px;
+      width: auto;
+      filter: drop-shadow(0 0 8px rgba(10, 48, 122, 0.4));
+    }
+
+    .brand-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      background: linear-gradient(to right, #3b82f6, var(--gcpc-gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-tag {
+      font-size: 0.65rem;
+      background: rgba(224, 139, 0, 0.15);
+      color: var(--gcpc-gold-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      border: 1px solid rgba(224, 139, 0, 0.3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #10b981;
+      font-weight: 500;
+      background: rgba(16, 185, 129, 0.08);
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10b981;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 8px #10b981; }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* Sidebar Customizer */
+    .sidebar {
+      background-color: rgba(7, 11, 19, 0.9);
+      border-right: 1px solid var(--border-color);
+      overflow-y: auto;
+      max-height: calc(100vh - 70px);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--gcpc-gold);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-help {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: -0.2rem;
+      line-height: 1.3;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, textarea, select {
+      background: rgba(7, 11, 19, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--gcpc-gold);
+      background: rgba(7, 11, 19, 0.85);
+      box-shadow: 0 0 0 2px rgba(224, 139, 0, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .row-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    /* Rules Dynamic List Builder */
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .rule-item input {
+      flex: 1;
+    }
+
+    .btn-icon-delete {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-icon-delete:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-add {
+      background: rgba(224, 139, 0, 0.08);
+      border: 1px dashed rgba(224, 139, 0, 0.3);
+      color: var(--gcpc-gold-light);
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add:hover {
+      background: var(--gcpc-gold);
+      border-style: solid;
+      color: white;
+    }
+
+    /* Preview & Code Pane */
+    .preview-pane {
+      background-color: #05080f;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 70px);
+      position: relative;
+    }
+
+    /* Viewport Switcher Toolbar */
+    .preview-toolbar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--glass-shadow);
+      z-index: 10;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .toolbar-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .viewport-controls {
+      display: flex;
+      background: rgba(7, 11, 19, 0.6);
+      border-radius: 8px;
+      padding: 0.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .viewport-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .viewport-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .viewport-btn.active {
+      background: var(--gcpc-blue);
+      color: white;
+      box-shadow: 0 2px 8px rgba(10, 48, 122, 0.4);
+    }
+
+    .preview-tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    /* Actions Panel */
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gcpc-gold) 0%, #c2410c 100%);
+      color: white;
+      border: none;
+      padding: 0.55rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(224, 139, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(224, 139, 0, 0.4);
+      filter: brightness(1.1);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.55rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Screen Mockups */
+    .preview-container-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex: 1;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 0;
+      border-radius: 16px;
+      min-height: 900px;
+      /* Diagonal Stripes Visual Motif (GCPC Color Accent Stripes) */
+      background: #090e18;
+    }
+
+    /* Slanting brand graphics matching your custom stripe image */
+    .diagonal-decor-1 {
+      position: absolute;
+      top: -10%;
+      right: -100px;
+      width: 320px;
+      height: 120px;
+      background: var(--gcpc-blue);
+      transform: rotate(-35deg);
+      border-radius: 30px;
+      opacity: 0.7;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(10,48,122,0.3);
+    }
+    .diagonal-decor-2 {
+      position: absolute;
+      top: 5%;
+      right: -140px;
+      width: 280px;
+      height: 90px;
+      background: var(--gcpc-gold);
+      transform: rotate(-35deg);
+      border-radius: 30px;
+      opacity: 0.85;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(224,139,0,0.3);
+    }
+    .diagonal-decor-3 {
+      position: absolute;
+      bottom: -8%;
+      left: -120px;
+      width: 380px;
+      height: 130px;
+      background: var(--gcpc-blue);
+      transform: rotate(-35deg);
+      border-radius: 35px;
+      opacity: 0.7;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(10,48,122,0.3);
+    }
+    .diagonal-decor-4 {
+      position: absolute;
+      bottom: 8%;
+      left: -150px;
+      width: 300px;
+      height: 90px;
+      background: var(--gcpc-gold);
+      transform: rotate(-35deg);
+      border-radius: 30px;
+      opacity: 0.85;
+      z-index: 1;
+      box-shadow: 0 10px 30px rgba(224,139,0,0.3);
+    }
+
+    .preview-frame {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      max-width: 660px;
+      z-index: 5;
+    }
+
+    .preview-frame.mobile {
+      max-width: 375px;
+      border: 12px solid #1e293b;
+      border-radius: 36px;
+      background: #1e293b;
+      box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      height: 800px;
+    }
+
+    .client-header {
+      background: #121824;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: none;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .preview-frame.mobile .client-header {
+      display: none; 
+    }
+
+    .client-header-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .client-label {
+      font-weight: 600;
+      color: var(--text-main);
+      width: 60px;
+    }
+
+    .preview-window {
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--glass-shadow);
+      min-height: 600px;
+      height: fit-content;
+      width: 100%;
+    }
+
+    .preview-frame.mobile .preview-window {
+      border-radius: 24px;
+      height: 100%;
+      min-height: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 850px;
+      border: none;
+      background: #f1f5f9;
+      display: block;
+    }
+
+    .preview-frame.mobile iframe {
+      min-height: 100%;
+      height: 100%;
+    }
+
+    /* Code Block Area */
+    .code-view-container {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: #38bdf8;
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      z-index: 10;
+    }
+
+    .code-view-container.active {
+      display: block;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+    }
+
+    .code-scroll {
+      max-height: 600px;
+      overflow-y: auto;
+      background: #020617;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Send Guide Area */
+    .guide-container {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    .guide-container.active {
+      display: block;
+    }
+
+    .guide-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--gcpc-gold);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.5rem;
+    }
+
+    .guide-step {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .step-number {
+      background: var(--gcpc-blue);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      border: 1px solid var(--gcpc-blue-light);
+    }
+
+    .step-content h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .step-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .step-content code {
+      background: rgba(7, 11, 19, 0.8);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      color: #38bdf8;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+    }
+
+    .important-notice {
+      background: rgba(224, 139, 0, 0.08);
+      border: 1px solid rgba(224, 139, 0, 0.2);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .important-notice svg {
+      color: var(--gcpc-gold);
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .important-notice div h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gcpc-gold);
+      margin-bottom: 0.25rem;
+    }
+
+    .important-notice div p {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(16, 185, 129, 0.95);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer Credits */
+    footer {
+      background: #030509;
+      border-top: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 📱 COMPREHENSIVE WORKSPACE & UTILITY RESPONSIVENESS */
+    @media only screen and (max-width: 1024px) {
+      .workspace {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+      }
+      .sidebar {
+        max-height: none !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color) !important;
+      }
+      .preview-pane {
+        max-height: none !important;
+        padding: 1rem !important;
+      }
+      header {
+        padding: 0.75rem 1rem !important;
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      footer {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        padding: 1rem !important;
+        text-align: center !important;
+      }
+      .footer-left {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+      }
+    }
+
+    @media only screen and (max-width: 600px) {
+      .preview-container-wrapper {
+        min-height: auto !important;
+        padding: 1rem 0 !important;
+      }
+      .preview-frame {
+        width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-container">
+      <img src="/assets/gcpc-logo.png" class="brand-logo" alt="GCPC Logo">
+      <div class="brand-text">DIU GCPC</div>
+      <div class="brand-tag">Email Suite</div>
+    </div>
+    <div class="header-actions">
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        Local Previewer Active
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="workspace">
+    
+    <!-- Sidebar Form Controls -->
+    <div class="sidebar">
+      
+      <!-- General Details Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          General Event Info
+        </div>
+        
+        <div class="form-group">
+          <label for="event-title">Event Title</label>
+          <input type="text" id="event-title" value="GCPC Girls' Coding Bootcamp 2026">
+        </div>
+        
+        <div class="form-group">
+          <label for="event-subtitle">Theme / Motto Tagline</label>
+          <input type="text" id="event-subtitle" value="Empowering Women In Competitive Programming">
+        </div>
+
+        <div class="form-group">
+          <label for="event-banner-url">Custom Hero Banner Image URL (Optional)</label>
+          <input type="url" id="event-banner-url" placeholder="e.g. https://example.com/banner-flyer.png" value="">
+          <span class="form-help">If provided, this image will display as the primary visual banner, replacing the default text-gradient hero block.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="email-subject">Email Subject Line</label>
+          <input type="text" id="email-subject" value="[DIU GCPC] Invitation to Girls' Coding Bootcamp Spring 2026 🚀">
+        </div>
+
+        <div class="form-group">
+          <label for="greeting-text">Greeting Salutation</label>
+          <input type="text" id="greeting-text" value="Salam and Greetings from DIU GCPC!">
+        </div>
+
+        <div class="form-group">
+          <label for="introduction-body">Introduction Paragraph</label>
+          <textarea id="introduction-body">We are thrilled to announce that DIU GCPC - DIU Girls' Computer Programming Club is organizing the "GCPC Girls' Coding Bootcamp 2026". This elite training bootcamp is specifically tailored to help female tech students level up their competitive programming skills, master foundational data structures, and prepare for upcoming national programming contests. Come learn, code, and grow under expert mentorship!</textarea>
+        </div>
+      </div>
+
+      <!-- Event Logistics Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          Bootcamp Logistics
+        </div>
+        <p class="form-help">💡 Note: For greeting cards or general emails, clear these values to hide their visual blocks completely.</p>
+
+        <div class="form-group">
+          <label for="event-date">Dates & Time</label>
+          <input type="text" id="event-date" value="June 15 - 18, 2026 | 09:30 AM - 04:30 PM">
+        </div>
+
+        <div class="form-group">
+          <label for="event-venue">Venue / Location</label>
+          <input type="text" id="event-venue" value="DIU CSE Computer Labs, Daffodil Smart City">
+        </div>
+
+        <div class="row-group">
+          <div class="form-group">
+            <label for="event-fee">Registration Fee</label>
+            <input type="text" id="event-fee" value="Free of Cost">
+          </div>
+          <div class="form-group">
+            <label for="event-platform">Contest Platform</label>
+            <input type="text" id="event-platform" value="Toph.co">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="event-audience">Eligible Participants / Who Can Join</label>
+          <input type="text" id="event-audience" value="All female CSE students of Daffodil International University">
+          <span class="form-help">Define who is eligible to register for this event (e.g. All CSE Dept students).</span>
+        </div>
+
+        <div class="form-group">
+          <label for="countdown-deadline">Registration Deadline (For Timer)</label>
+          <input type="datetime-local" id="countdown-deadline" value="2026-06-10T23:59">
+          <span class="form-help">Clear this date selector to completely remove the Countdown Box.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="register-url">Registration Link URL</label>
+          <input type="url" id="register-url" value="https://gcpc-diu.edu.bd/register">
+          <span class="form-help">Clear this URL to completely hide the "Register Now" button.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="facebook-url">Facebook Event Link</label>
+          <input type="url" id="facebook-url" value="https://facebook.com/diugcpc">
+          <span class="form-help">Clear this URL to completely hide the secondary Facebook Event button.</span>
+        </div>
+      </div>
+
+      <!-- Guidelines / Rules Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 012 2v2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+          Rules & Perks
+        </div>
+        <p class="form-help">Delete all guidelines to completely hide the "Guidelines & Benefits" list from the email card.</p>
+        <div class="form-group">
+          <label>List of Highlights (Rules/Regulations/Perks)</label>
+          <div id="rules-container" class="rules-list">
+            <!-- Dynamically populated -->
+          </div>
+          <button type="button" class="btn-add" onclick="addNewRule()">
+            <svg style="width:14px; height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            Add New Guideline / Perk
+          </button>
+        </div>
+      </div>
+
+      <!-- Social Media Links Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+          Social Media Links
+        </div>
+        <p class="form-help">Configure your custom brand links to let readers navigate directly from the footer icons.</p>
+        
+        <div class="form-group">
+          <label for="social-fb-url">Facebook Page URL</label>
+          <input type="url" id="social-fb-url" value="https://www.facebook.com/DIUGCPC">
+        </div>
+
+        <div class="form-group">
+          <label for="social-ig-url">Instagram URL</label>
+          <input type="url" id="social-ig-url" value="https://www.instagram.com/diu_gcpc">
+        </div>
+
+        <div class="form-group">
+          <label for="social-li-url">LinkedIn Company URL</label>
+          <input type="url" id="social-li-url" value="https://www.linkedin.com/company/gcpc-diu">
+        </div>
+
+        <div class="form-group">
+          <label for="social-tg-url">Telegram Channel URL</label>
+          <input type="url" id="social-tg-url" value="https://t.me/diugcpc">
+        </div>
+
+        <div class="form-group">
+          <label for="social-web-url">Official Website URL</label>
+          <input type="url" id="social-web-url" value="https://gcpc.daffodilvarsity.edu.bd/">
+        </div>
+      </div>
+
+      <!-- Contact Info Section -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          Contact / Queries
+        </div>
+        <p class="form-help">Clear these inputs to hide the Coordinator details block from the email template footer completely.</p>
+
+        <div class="form-group">
+          <label for="contact-name">Contact Person Name</label>
+          <input type="text" id="contact-name" value="Fateha Hossain Anushka">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-role">Role / Designation</label>
+            <input type="text" id="contact-role" value="President, DIU GCPC">
+        </div>
+
+        <div class="row-group">
+          <div class="form-group">
+            <label for="contact-phone">Phone Number</label>
+            <input type="text" id="contact-phone" value="+880 1791 110283">
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Email Address</label>
+            <input type="email" id="contact-email" value="gcpc@diu.edu.bd">
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Branding Configuration -->
+      <div class="section-card">
+        <div class="section-title">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          Hosted Logos (Absolute URLs)
+        </div>
+        <p style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.3;">
+          We preconfigured public Raw GitHub CDN URLs for all logo files so your compiled email loads them globally in standard email clients without local path bugs!
+        </p>
+
+        <div class="form-group">
+          <label for="logo-gcpc-url">Hosted Club Logo URL</label>
+          <input type="url" id="logo-gcpc-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/gcpc-logo.png">
+        </div>
+
+        <div class="form-group">
+          <label for="logo-varsity-url">Hosted Varsity Logo URL</label>
+          <input type="url" id="logo-varsity-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/university-logo.png">
+        </div>
+
+        <div class="form-group">
+          <label for="logo-cse-url">Hosted CSE Dept Logo URL</label>
+          <input type="url" id="logo-cse-url" value="https://raw.githubusercontent.com/anushka06onu/GCPC-DIU/main/public/cse-logo.jpeg">
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Right Preview & Code Workspace -->
+    <div class="preview-pane">
+      
+      <!-- Toolbar controls -->
+      <div class="preview-toolbar">
+        <div class="toolbar-left">
+          <div class="toolbar-title">Email Workspace</div>
+          <div class="viewport-controls">
+            <button class="viewport-btn active" id="btn-viewport-desktop" onclick="setViewport('desktop')">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              Desktop
+            </button>
+            <button class="viewport-btn" id="btn-viewport-mobile" onclick="setViewport('mobile')">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+              Mobile
+            </button>
+          </div>
+        </div>
+        
+        <div class="preview-tabs">
+          <button class="tab-btn active" id="tab-preview" onclick="switchTab('preview')">Live Template Preview</button>
+          <button class="tab-btn" id="tab-code" onclick="switchTab('code')">HTML Code Exporter</button>
+          <button class="tab-btn" id="tab-guide" onclick="switchTab('guide')">Send Instructions</button>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-secondary" onclick="downloadHTML()">
+            <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Download HTML
+          </button>
+          <button class="btn-primary" onclick="copyHTMLToClipboard()">
+            <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2M8 5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            Copy Email HTML
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Layout Container with slanting brand art behind it -->
+      <div class="preview-container-wrapper" id="content-preview">
+        <!-- Abstract slanting stripes from your uploaded branding mockup! -->
+        <div class="diagonal-decor-1"></div>
+        <div class="diagonal-decor-2"></div>
+        <div class="diagonal-decor-3"></div>
+        <div class="diagonal-decor-4"></div>
+
+        <div class="preview-frame" id="viewport-frame">
+          
+          <!-- Mock Client Header Details -->
+          <div class="client-header">
+            <div class="client-header-row">
+              <span class="client-label">From:</span>
+              <span>DIU GCPC - DIU Girls' Computer Programming Club &lt;gcpc@diu.edu.bd&gt;</span>
+            </div>
+            <div class="client-header-row">
+              <span class="client-label">To:</span>
+              <span>DIU CSE Female Students &lt;cse-students@diu.edu.bd&gt;</span>
+            </div>
+            <div class="client-header-row">
+              <span class="client-label">Subject:</span>
+              <span id="subject-preview-text" style="color: var(--gcpc-gold-light); font-weight: 500;">[DIU GCPC] Invitation to Girls' Coding Bootcamp Spring 2026 🚀</span>
+            </div>
+          </div>
+
+          <!-- Sandbox Preview Window -->
+          <div class="preview-window">
+            <iframe id="preview-iframe"></iframe>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Source Code Display Container -->
+      <div class="code-view-container" id="content-code">
+        <div class="code-header">
+          <span>Production-Ready Inline-Styled HTML</span>
+          <button class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="copyHTMLToClipboard()">Copy to Clipboard</button>
+        </div>
+        <div class="code-scroll">
+          <pre id="code-output-text">Compiling HTML source code...</pre>
+        </div>
+      </div>
+
+      <!-- Send Instructions Container -->
+      <div class="guide-container" id="content-guide">
+        <div class="guide-title">
+          <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          How to Send Your HTML Email
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Method A: Sending directly via Gmail (The Copy-Paste Trick)</h3>
+            <p>
+              1. Click the <strong>"Copy Email HTML"</strong> button in this dashboard to copy the fully compiled HTML code.<br>
+              2. Open Gmail in Google Chrome, click "Compose", and type a placeholder word in the email body (e.g. <code>[RENDER]</code>).<br>
+              3. Right-click the placeholder word, click <strong>"Inspect"</strong> to open Chrome Developer Tools.<br>
+              4. In the inspect pane, right-click the selected HTML element, click <strong>"Edit as HTML"</strong>.<br>
+              5. Replace the placeholder element completely by pasting the copied HTML, then close the inspect pane.<br>
+              6. Your gorgeous, customized GCPC email is now rendered beautifully inside Gmail and ready to send!
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Method B: Sending via Automated Scripts (Node.js / Python)</h3>
+            <p>
+              If your club uses automation scripts to mail students:<br>
+              1. Click <strong>"Download HTML"</strong> to download the template file (e.g., <code>email_template.html</code>).<br>
+              2. Load this file in your script (e.g., using Python's <code>open('email_template.html', 'r').read()</code> or Node.js <code>fs.readFileSync()</code>).<br>
+              3. Send it as an HTML-type email using libraries like <strong>Nodemailer</strong> in Node.js, or <strong>smtplib / email.mime</strong> in Python.
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Method C: Using Email Platforms (Mailchimp, SendGrid, etc.)</h3>
+            <p>
+              If sending via mass-mailing services:<br>
+              1. Open your mailing platform and create a new Campaign.<br>
+              2. Select <strong>"Upload HTML"</strong> or <strong>"Code Your Own" / "HTML Code Editor"</strong>.<br>
+              3. Paste the copied source code into the editor. These platforms will automatically host the images and track clicks for you!
+            </p>
+          </div>
+        </div>
+
+        <div class="important-notice">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <div>
+            <h4>Why are absolute image links important?</h4>
+            <p>
+              Email clients (like Outlook or Gmail app) are isolated environments. They cannot load local files like <code>assets/gcpc-logo.png</code>. In order for recipients to see the logos, every image URL must be a public web address. We have automatically preconfigured these logos to pull from your public GitHub repository production branch (<code>githubusercontent.com</code>) so that your emails will load with 100% correct graphics immediately!
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer Credits -->
+  <footer>
+    <div class="footer-left">
+      <span>Developed for the <strong>DIU GCPC - DIU Girls' Computer Programming Club</strong></span>
+    </div>
+    <div>
+      <span>DIU Department of CSE © 2026. Academic Club Email Suite.</span>
+    </div>
+  </footer>
+
+  <!-- Toast Toast Notification -->
+  <div class="toast" id="clipboard-toast">
+    <svg style="width:18px; height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <span>HTML Email Template Copied! Ready to send.</span>
+  </div>
+
+  <script>
+    // State management
+    const state = {
+      rules: [
+        "Open exclusively to female students of Daffodil International University.",
+        "Prior basic programming logic (C/C++ or Python) is recommended but not mandatory.",
+        "Participants must bring their own laptops for the hands-on lab sessions.",
+        "Includes elite training mentorship, live mock coding challenges, and mock contests.",
+        "All bootcamp graduates will receive exclusive GCPC T-shirts, snacks, and departmental certificates."
+      ],
+      viewport: 'desktop',
+      activeTab: 'preview'
+    };
+
+    // DOM Elements
+    const rulesContainer = document.getElementById('rules-container');
+    const iframe = document.getElementById('preview-iframe');
+    const codeOutput = document.getElementById('code-output-text');
+    const subjectPreview = document.getElementById('subject-preview-text');
+    
+    // Initializer
+    window.addEventListener('DOMContentLoaded', () => {
+      renderRulesList();
+      bindInputListeners();
+      
+      // Select date to set default (5 days from now)
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() + 5);
+      defaultDate.setHours(23, 59, 0, 0);
+      
+      // format to YYYY-MM-DDThh:mm
+      const formatted = defaultDate.toISOString().slice(0, 16);
+      document.getElementById('countdown-deadline').value = formatted;
+      
+      updatePreview();
+    });
+
+    // Dynamic Rules Render
+    function renderRulesList() {
+      rulesContainer.innerHTML = '';
+      state.rules.forEach((rule, idx) => {
+        const item = document.createElement('div');
+        item.className = 'rule-item';
+        item.innerHTML = `
+          <input type="text" value="${escapeHtml(rule)}" data-index="${idx}" oninput="updateRuleText(this)">
+          <button type="button" class="btn-icon-delete" onclick="deleteRule(${idx})">
+            <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </button>
+        `;
+        rulesContainer.appendChild(item);
+      });
+      if (state.rules.length === 0) {
+        rulesContainer.innerHTML = '<span style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">No guidelines added. Guidelines block will be omitted.</span>';
+      }
+    }
+
+    // Add list items
+    function addNewRule() {
+      state.rules.push("New guideline or benefit description...");
+      renderRulesList();
+      updatePreview();
+    }
+
+    // Delete list items
+    function deleteRule(index) {
+      state.rules.splice(index, 1);
+      renderRulesList();
+      updatePreview();
+    }
+
+    function updateRuleText(input) {
+      const idx = parseInt(input.dataset.index);
+      state.rules[idx] = input.value;
+      updatePreview();
+    }
+
+    // Input Listeners
+    function bindInputListeners() {
+      const inputs = [
+        'event-title', 'event-subtitle', 'event-banner-url', 'email-subject', 'greeting-text', 
+        'introduction-body', 'event-date', 'event-venue', 'event-fee', 'event-platform', 'event-audience',
+        'countdown-deadline', 'register-url', 'facebook-url',
+        'social-fb-url', 'social-ig-url', 'social-li-url', 'social-tg-url', 'social-web-url',
+        'contact-name', 'contact-role', 'contact-phone', 'contact-email',
+        'logo-gcpc-url', 'logo-varsity-url', 'logo-cse-url'
+      ];
+      
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', () => {
+            if (id === 'email-subject') {
+              subjectPreview.textContent = el.value;
+            }
+            updatePreview();
+          });
+        }
+      });
+    }
+
+    // Viewport control
+    function setViewport(size) {
+      state.viewport = size;
+      const frame = document.getElementById('viewport-frame');
+      const btnDesktop = document.getElementById('btn-viewport-desktop');
+      const btnMobile = document.getElementById('btn-viewport-mobile');
+
+      if (size === 'desktop') {
+        frame.className = 'preview-frame';
+        btnDesktop.classList.add('active');
+        btnMobile.classList.remove('active');
+      } else {
+        frame.className = 'preview-frame mobile';
+        btnDesktop.classList.remove('active');
+        btnMobile.classList.add('active');
+      }
+    }
+
+    // Tab switcher
+    function switchTab(tab) {
+      state.activeTab = tab;
+      
+      const tabPreview = document.getElementById('tab-preview');
+      const tabCode = document.getElementById('tab-code');
+      const tabGuide = document.getElementById('tab-guide');
+      
+      const contentPreview = document.getElementById('content-preview');
+      const contentCode = document.getElementById('content-code');
+      const contentGuide = document.getElementById('content-guide');
+
+      tabPreview.classList.remove('active');
+      tabCode.classList.remove('active');
+      tabGuide.classList.remove('active');
+      contentPreview.style.display = 'none';
+      contentCode.classList.remove('active');
+      contentGuide.classList.remove('active');
+
+      if (tab === 'preview') {
+        tabPreview.classList.add('active');
+        contentPreview.style.display = 'flex';
+      } else if (tab === 'code') {
+        tabCode.classList.add('active');
+        contentCode.classList.add('active');
+        // Refresh code output text block
+        codeOutput.textContent = compileEmailHTML();
+      } else if (tab === 'guide') {
+        tabGuide.classList.add('active');
+        contentGuide.classList.add('active');
+      }
+    }
+
+    // HTML Email Template Compilation Engine
+    function compileEmailHTML() {
+      // Fetch values from inputs
+      const eventTitle = document.getElementById('event-title').value;
+      const eventSubtitle = document.getElementById('event-subtitle').value;
+      const greetingText = document.getElementById('greeting-text').value;
+      const introductionBody = document.getElementById('introduction-body').value;
+      const eventDate = document.getElementById('event-date').value;
+      const eventVenue = document.getElementById('event-venue').value;
+      const eventFee = document.getElementById('event-fee').value;
+      const eventPlatform = document.getElementById('event-platform').value;
+      const countdownDeadline = document.getElementById('countdown-deadline').value;
+      const registerUrl = document.getElementById('register-url').value;
+      const facebookUrl = document.getElementById('facebook-url').value;
+      
+      const socialFb = document.getElementById('social-fb-url').value;
+      const socialIg = document.getElementById('social-ig-url').value;
+      const socialLi = document.getElementById('social-li-url').value;
+      const socialTg = document.getElementById('social-tg-url').value;
+      const socialWeb = document.getElementById('social-web-url').value;
+
+      const contactName = document.getElementById('contact-name').value;
+      const contactRole = document.getElementById('contact-role').value;
+      const contactPhone = document.getElementById('contact-phone').value;
+      const contactEmail = document.getElementById('contact-email').value;
+      
+      const logoGcpc = document.getElementById('logo-gcpc-url').value;
+      const logoVarsity = document.getElementById('logo-varsity-url').value;
+      const logoCse = document.getElementById('logo-cse-url').value;
+
+      const eventBannerUrl = document.getElementById('event-banner-url').value;
+      const eventAudience = document.getElementById('event-audience').value;
+
+      // Brand Exact Colors: Blue (#0a307a) & Golden Orange (#e08b00)
+      const brandBlue = '#0a307a';
+      const brandGold = '#e08b00';
+
+      // Custom Banner Render Logic
+      let heroBannerHtml = '';
+      if (eventBannerUrl) {
+        heroBannerHtml = `
+          <!-- CUSTOM IMAGE HERO BANNER -->
+          <tr>
+            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; border-bottom: 4px solid ${brandGold};">
+              <a href="${registerUrl || socialWeb}" target="_blank" style="text-decoration: none; display: block;">
+                <img src="${eventBannerUrl}" alt="Event Banner" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;" />
+              </a>
+            </td>
+          </tr>
+        `;
+      } else {
+        heroBannerHtml = `
+          <!-- TEXT GRADIENT HERO BANNER -->
+          <tr>
+            <td align="center" style="background-color: ${brandBlue}; padding: 40px 30px; position: relative; border-bottom: 4px solid ${brandGold};">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;">
+                <tr>
+                  <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 10px;">
+                    ${escapeHtml(eventTitle)}
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold}; letter-spacing: 1px; text-transform: uppercase;">
+                    ${escapeHtml(eventSubtitle)}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 1. CONDITIONAL LOGISTICS GRID BLOCK (Hide if all empty)
+      const hasLogistics = !!eventDate || !!eventVenue || !!eventFee || !!eventPlatform || !!eventAudience;
+      let logisticsHtml = '';
+      if (hasLogistics) {
+        let dateRow = '';
+        if (eventDate) {
+          dateRow = `<tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">📅</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Date & Time:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventDate)}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+        }
+
+        let audienceRow = '';
+        if (eventAudience) {
+          audienceRow = `<tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">🎓</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Eligible For:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventAudience)}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+        }
+
+        let venueRow = '';
+        if (eventVenue) {
+          venueRow = `<tr>
+            <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">📍</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Location:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventVenue)}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+        }
+
+        let feeAndPlatformRow = '';
+        if (eventFee || eventPlatform) {
+          let feeCell = '';
+          let platformCell = '';
+          
+          if (eventFee && eventPlatform) {
+            feeCell = `<td class="mobile-col" width="50%" style="vertical-align: top; padding-bottom: 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💵</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 60px;">Fee:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventFee)}</td>
+                </tr>
+              </table>
+            </td>`;
+            
+            platformCell = `<td class="mobile-col" width="50%" style="vertical-align: top; padding-bottom: 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💻</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 70px;">Platform:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
+                </tr>
+              </table>
+            </td>`;
+          } else if (eventFee) {
+            feeCell = `<td class="mobile-col" width="100%" style="vertical-align: top; padding-bottom: 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💵</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 60px;">Fee:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventFee)}</td>
+                </tr>
+              </table>
+            </td>`;
+          } else if (eventPlatform) {
+            platformCell = `<td class="mobile-col" width="100%" style="vertical-align: top; padding-bottom: 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💻</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 70px;">Platform:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
+                </tr>
+              </table>
+            </td>`;
+          }
+
+          feeAndPlatformRow = `<tr>
+            <td style="padding: 10px 0 0 0;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  ${feeCell}
+                  ${platformCell}
+                </tr>
+              </table>
+            </td>
+          </tr>`;
+        }
+
+        logisticsHtml = `
+          <!-- LOGISTICS SECTION -->
+          <tr>
+            <td style="padding-bottom: 25px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border-left: 4px solid ${brandGold}; border-radius: 8px; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; overflow: hidden;">
+                <tr>
+                  <td style="padding: 15px 20px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      ${dateRow}
+                      ${audienceRow}
+                      ${venueRow}
+                      ${feeAndPlatformRow}
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 2. CONDITIONAL GUIDELINES LIST BLOCK (Hide if empty list)
+      const hasRules = state.rules && state.rules.length > 0 && state.rules.some(rule => rule.trim() !== "");
+      let rulesHtml = '';
+      if (hasRules) {
+        let rulesListItems = '';
+        state.rules.forEach(rule => {
+          if (rule.trim() !== "") {
+            rulesListItems += `
+              <tr>
+                <td style="padding: 5px 0;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                      <td valign="top" class="text-gold" style="width: 20px; font-family: sans-serif; font-size: 16px; color: ${brandGold}; line-height: 20px; font-weight: bold; padding-top: 1px;">•</td>
+                      <td valign="top" class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5; font-weight: 400; padding-left: 4px;">
+                        ${escapeHtml(rule)}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            `;
+          }
+        });
+
+        rulesHtml = `
+          <!-- RULES & REGULATIONS SECTION -->
+          <tr>
+            <td style="padding-bottom: 25px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td class="text-gold" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 15px; font-weight: 700; color: ${brandGold}; padding-bottom: 10px;">
+                    📋 Guidelines & Benefits:
+                  </td>
+                </tr>
+                ${rulesListItems}
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 3. CONDITIONAL REGISTER CTA BUTTON (Hide if URL empty)
+      let ctaHtml = '';
+      if (registerUrl) {
+        ctaHtml = `
+          <!-- MAIN REGISTER CTA BUTTON -->
+          <tr>
+            <td align="center" style="padding-bottom: 25px;">
+              <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                <tr>
+                  <td align="center" style="background-color: ${brandGold}; border-radius: 8px;">
+                    <a href="${registerUrl}" target="_blank" class="btn-orange" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; text-decoration: none; padding: 14px 35px; display: inline-block; letter-spacing: 0.5px; border-radius: 8px; border: 1px solid ${brandGold}; box-shadow: 0 4px 10px rgba(224, 139, 0, 0.2); transition: all 0.25s ease;">
+                      Register Now 🚀
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 4. CONDITIONAL COUNTDOWN BLOCK (Hide if deadline selector empty)
+      let countdownHtml = '';
+      let deadlineFormatted = '';
+      if (countdownDeadline) {
+        const d = new Date(countdownDeadline);
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const hours = d.getHours();
+        const mins = d.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        deadlineFormatted = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} (${displayHours}:${mins} ${ampm})`;
+
+        // Calculate live static snapshot values at compilation moment
+        let calcDays = '00';
+        let calcHours = '00';
+        let calcMinutes = '00';
+        let calcSeconds = '00';
+        const targetDate = new Date(countdownDeadline);
+        const currentDate = new Date();
+        const diffMs = targetDate - currentDate;
+        if (diffMs > 0) {
+          const totalSecs = Math.floor(diffMs / 1000);
+          const secs = totalSecs % 60;
+          const totalMins = Math.floor(totalSecs / 60);
+          const minsVal = totalMins % 60;
+          const totalHours = Math.floor(totalMins / 60);
+          const hoursVal = totalHours % 24;
+          const days = Math.floor(totalHours / 24);
+
+          calcDays = String(days).padStart(2, '0');
+          calcHours = String(hoursVal).padStart(2, '0');
+          calcMinutes = String(minsVal).padStart(2, '0');
+          calcSeconds = String(secs).padStart(2, '0');
+        }
+
+        countdownHtml = `
+          <!-- LIVE COUNTDOWN TIMER BLOCK -->
+          <tr>
+            <td align="center" style="padding-bottom: 25px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <tr>
+                  <td style="padding: 25px 20px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px;">
+                          ⏳ Remaining Time for Registration
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <div id="email-countdown-box" style="display: inline-block;">
+                            <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                              <tr>
+                                <!-- Days -->
+                                <td align="center" style="padding: 0 4px;">
+                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
+                                    <span id="mail-days" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcDays}</span>
+                                  </div>
+                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Days</div>
+                                </td>
+                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
+                                <!-- Hours -->
+                                <td align="center" style="padding: 0 4px;">
+                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
+                                    <span id="mail-hours" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcHours}</span>
+                                  </div>
+                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Hours</div>
+                                </td>
+                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
+                                <!-- Minutes -->
+                                <td align="center" style="padding: 0 4px;">
+                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
+                                    <span id="mail-minutes" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcMinutes}</span>
+                                  </div>
+                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Mins</div>
+                                </td>
+                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
+                                <!-- Seconds -->
+                                <td align="center" style="padding: 0 4px;">
+                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
+                                    <span id="mail-seconds" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcSeconds}</span>
+                                  </div>
+                                  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Secs</div>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #64748b; padding-top: 15px; font-weight: 500;">
+                          Registration Closes On: <strong style="color: ${brandGold};">${deadlineFormatted}</strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 5. CONDITIONAL FACEBOOK EVENT BUTTON (Hide if URL empty)
+      let secondaryCtaHtml = '';
+      if (facebookUrl) {
+        secondaryCtaHtml = `
+          <!-- SECONDARY ACTIONS -->
+          <tr>
+            <td align="center" style="padding: 0 0 20px 0;">
+              <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+                <tr>
+                  <td align="center" style="background-color: ${brandBlue}; border-radius: 6px;">
+                    <a href="${facebookUrl}" target="_blank" class="btn-blue btn-facebook" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 600; color: #ffffff; text-decoration: none; padding: 10px 25px; display: inline-block; border-radius: 6px; border: 1px solid ${brandBlue}; transition: all 0.2s ease;">
+                      👥 Visit Facebook Event
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 6. CONDITIONAL CONTACT / QUERIES BLOCK (Hide if all empty)
+      const hasContact = !!contactName || !!contactRole || !!contactPhone || !!contactEmail;
+      let contactHtml = '';
+      if (hasContact) {
+        let nameLine = contactName ? `<p class="text-slate" style="margin: 4px 0 2px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a;">${escapeHtml(contactName)}</p>` : '';
+        let roleLine = contactRole ? `<p class="text-gold" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: ${brandGold}; font-weight: 600;">${escapeHtml(contactRole)}</p>` : '';
+        let phoneLine = contactPhone ? `<p class="text-muted" style="margin: 4px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569;">Mobile: ${escapeHtml(contactPhone)}</p>` : '';
+        let emailLine = contactEmail ? `<p class="text-muted" style="margin: 2px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569;">Email: <a href="mailto:${contactEmail}" class="link-blue" style="color: ${brandBlue}; text-decoration: none; font-weight: 600;">${escapeHtml(contactEmail)}</a></p>` : '';
+
+        contactHtml = `
+          <!-- CONTACT / QUERY BOX FOOTER -->
+          <tr>
+            <td style="padding: 0 30px 30px 30px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px dashed #cbd5e1; padding-top: 20px;">
+                <tr>
+                  <td>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td style="vertical-align: top;">
+                          <p class="text-muted" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">For any query:</p>
+                          ${nameLine}
+                          ${roleLine}
+                          ${phoneLine}
+                          ${emailLine}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // 7. COMPILING THE SOCIAL MEDIA LINKS ICONS (Vibrant official brand colors requested)
+      let socialMediaRow = '';
+      if (socialFb || socialIg || socialLi || socialTg || socialWeb) {
+        let socialFbCell = socialFb ? `<td style="padding: 0 8px;">
+          <a href="${socialFb}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook" width="32" height="32" style="display: block; width: 32px; height: 32px; border: 0;" />
+          </a>
+        </td>` : '';
+
+        let socialIgCell = socialIg ? `<td style="padding: 0 8px;">
+          <a href="${socialIg}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram" width="32" height="32" style="display: block; width: 32px; height: 32px; border: 0;" />
+          </a>
+        </td>` : '';
+
+        let socialLiCell = socialLi ? `<td style="padding: 0 8px;">
+          <a href="${socialLi}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="https://img.icons8.com/color/48/linkedin.png" alt="LinkedIn" width="32" height="32" style="display: block; width: 32px; height: 32px; border: 0;" />
+          </a>
+        </td>` : '';
+
+        let socialTgCell = socialTg ? `<td style="padding: 0 8px;">
+          <a href="${socialTg}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="https://img.icons8.com/color/48/telegram-app.png" alt="Telegram" width="32" height="32" style="display: block; width: 32px; height: 32px; border: 0;" />
+          </a>
+        </td>` : '';
+
+        let socialWebCell = socialWeb ? `<td style="padding: 0 8px;">
+          <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="https://img.icons8.com/color/48/domain.png" alt="Website" width="32" height="32" style="display: block; width: 32px; height: 32px; border: 0;" />
+          </a>
+        </td>` : '';
+
+        socialMediaRow = `
+          <tr>
+            <td align="center" style="padding-bottom: 25px;">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  ${socialFbCell}
+                  ${socialIgCell}
+                  ${socialLiCell}
+                  ${socialTgCell}
+                  ${socialWebCell}
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }
+
+      // Construct and return the full inline-styled, email-safe HTML
+      return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>${escapeHtml(eventTitle)}</title>
+  <style type="text/css">
+    :root {
+      color-scheme: light;
+      supported-color-schemes: light;
+    }
+    /* Client-specific Resets */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+
+    /* Reset Styles */
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #f1f5f9; }
+
+    /* 🌙 GORGEOUS NATIVE DARK & LIGHT MODE FRIENDLY OVERRIDES */
+    @media (prefers-color-scheme: dark) {
+      /* Keep the brand logo pills solid white so transparent letters are fully readable */
+      .white-capsule {
+        background-color: #ffffff !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+      }
+      .white-capsule td {
+        background-color: #ffffff !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+      }
+      /* Contrast-enhanced colors for text elements in dark mode */
+      .text-slate {
+        color: #f1f5f9 !important; /* Soft premium white/light-gray */
+      }
+      .text-muted {
+        color: #94a3b8 !important; /* Premium muted gray */
+      }
+      .text-gold {
+        color: #fbbf24 !important; /* Bright high-contrast amber gold */
+      }
+      .link-blue {
+        color: #fbbf24 !important; /* Underline gold contact links in dark mode */
+      }
+      /* Hero banner title/subtitle text */
+      .hero-title-text {
+        color: #ffffff !important;
+      }
+      .hero-subtitle-text {
+        color: #fbbf24 !important;
+      }
+      /* Prevent action button shifting to purple and keep it brand-appropriate */
+      .btn-facebook {
+        background-color: #1877F2 !important;
+        border-color: #1877F2 !important;
+        color: #ffffff !important;
+      }
+    }
+
+    /* iOS Blue Links */
+    a[x-apple-data-detectors] {
+      color: inherit !important;
+      text-decoration: none !important;
+      font-size: inherit !important;
+      font-family: inherit !important;
+      font-weight: inherit !important;
+      line-height: inherit !important;
+    }
+
+    /* 📱 HIGHLY ROBUST RESPONSIVE MEDIA QUERIES */
+    @media only screen and (max-width: 600px) {
+      .responsive-table {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 8px !important;
+      }
+      .mobile-padding {
+        padding: 20px 12px !important;
+      }
+      .mobile-col {
+        width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+        padding-bottom: 12px !important;
+      }
+      .mobile-col:last-child {
+        padding-bottom: 0 !important;
+      }
+      .mobile-center {
+        text-align: center !important;
+        margin: 0 auto !important;
+      }
+      .hero-title {
+        font-size: 20px !important;
+        line-height: 1.3 !important;
+      }
+      /* Prevent text content from blowing out layout */
+      .responsive-table td,
+      .responsive-table span,
+      .responsive-table div,
+      .responsive-table a,
+      .responsive-table p {
+        word-break: break-word !important;
+      }
+      /* Countdown responsive scaling */
+      .mail-timer-box {
+        min-width: 38px !important;
+        padding: 6px 4px !important;
+      }
+      .mail-timer-num {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Hover States in supported mail clients */
+    .btn-orange:hover {
+      background-color: #be7500 !important;
+      box-shadow: 0 4px 12px rgba(224, 139, 0, 0.3) !important;
+    }
+    .btn-blue:hover {
+      background-color: #08245b !important;
+    }
+  </style>
+</head>
+<body class="main-bg" style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+  <center class="main-bg" style="width: 100%; background-color: #f1f5f9; padding: 30px 0;">
+    <table border="0" cellpadding="0" cellspacing="0" class="responsive-table main-body-card" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+      
+      <!-- Compact Brand Header Block (Clean, executive-style centered GCPC Logo) -->
+      <tr>
+        <td align="center" style="padding: 14px 30px; text-align: center; border-bottom: 1px solid #f1f5f9;">
+          <table border="0" cellpadding="0" cellspacing="0" class="white-capsule" style="margin: 0 auto; background: linear-gradient(#ffffff, #ffffff) !important; background-color: #ffffff; border-radius: 6px; padding: 6px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); display: inline-block;">
+            <tr>
+              <td align="center" style="vertical-align: middle;">
+                <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: block;">
+                  <img src="${logoGcpc}" alt="DIU GCPC Logo" width="105" style="display: block; width: 105px; max-width: 105px; height: auto; border: 0;" />
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      ${heroBannerHtml}
+
+      <!-- BODY EMAIL CONTENT -->
+      <tr>
+        <td class="mobile-padding" style="padding: 35px 30px 25px 30px; background-color: #ffffff;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <!-- Greetings -->
+            <tr>
+              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; padding-bottom: 12px;">
+                ${escapeHtml(greetingText)}
+              </td>
+            </tr>
+            <!-- Invitation Text -->
+            <tr>
+              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; color: #334155; line-height: 1.6; padding-bottom: 25px; font-weight: 400;">
+                ${escapeHtml(introductionBody).replace(/\n/g, '<br/>')}
+              </td>
+            </tr>
+            
+            ${logisticsHtml}
+
+            ${rulesHtml}
+
+            ${ctaHtml}
+
+            ${countdownHtml}
+
+            ${secondaryCtaHtml}
+
+          </table>
+        </td>
+      </tr>
+
+      ${contactHtml}
+
+      <!-- BLUEISH FOOTER CREDITS & SOCIALS (Blue Background & Colorful Icons) -->
+      <tr>
+        <td align="center" style="background-color: ${brandBlue}; padding: 35px 30px; border-top: 1px solid #141d2f;">
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            
+            <!-- Secondary Varsity & CSE Branding Row (Original colors inside elegant white capsule) -->
+            <tr>
+              <td align="center" style="padding-bottom: 25px;">
+                <table border="0" cellpadding="0" cellspacing="0" class="white-capsule" style="margin: 0 auto; background: linear-gradient(#ffffff, #ffffff) !important; background-color: #ffffff; border-radius: 8px; padding: 8px 18px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+                  <tr>
+                    <!-- Varsity Logo -->
+                    <td style="vertical-align: middle;">
+                      <img src="${logoVarsity}" alt="DIU Logo" height="24" style="height: 24px; width: auto; display: block; border: 0; filter: drop-shadow(0px 0px 3px #ffffff) drop-shadow(0px 0px 3px #ffffff);" />
+                    </td>
+                    <!-- Slim Vertical Divider -->
+                    <td style="vertical-align: middle; padding: 0 14px; color: #cbd5e1; font-weight: 400; font-size: 14px;">|</td>
+                    <!-- CSE Logo -->
+                    <td style="vertical-align: middle;">
+                      <img src="${logoCse}" alt="DIU CSE Logo" height="24" style="height: 24px; width: auto; display: block; border: 0; filter: drop-shadow(0px 0px 3px #ffffff) drop-shadow(0px 0px 3px #ffffff);" />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            ${socialMediaRow}
+
+            <!-- Copy info -->
+            <tr>
+              <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #ffffff; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 6px;">
+                DIU GCPC - DIU Girls' Computer Programming Club
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; color: #cbd5e1; line-height: 1.5;">
+                Department of CSE, Daffodil International University<br>
+                Daffodil Smart City, Ashulia, Savar, Dhaka.
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+
+    </table>
+  </center>
+
+  <!-- Embed Embedded Countdown Animation Engine Script -->
+  <script type="text/javascript">
+    (function() {
+      var targetDateStr = "${countdownDeadline}";
+      if (!targetDateStr) return;
+      var targetDate = new Date(targetDateStr).getTime();
+      if (isNaN(targetDate)) return;
+
+      function updateMailTimer() {
+        var now = new Date().getTime();
+        var distance = targetDate - now;
+
+        if (distance < 0) {
+          clearInterval(timerInterval);
+          document.getElementById("mail-days").innerHTML = "00";
+          document.getElementById("mail-hours").innerHTML = "00";
+          document.getElementById("mail-minutes").innerHTML = "00";
+          document.getElementById("mail-seconds").innerHTML = "00";
+          return;
+        }
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("mail-days").innerHTML = days.toString().padStart(2, '0');
+        document.getElementById("mail-hours").innerHTML = hours.toString().padStart(2, '0');
+        document.getElementById("mail-minutes").innerHTML = minutes.toString().padStart(2, '0');
+        document.getElementById("mail-seconds").innerHTML = seconds.toString().padStart(2, '0');
+      }
+
+      updateMailTimer();
+      var timerInterval = setInterval(updateMailTimer, 1000);
+    })();
+  <\/script>
+
+</body>
+</html>`;
+    }
+
+    // Live HTML compiler trigger for preview iframe
+    function updatePreview() {
+      const html = compileEmailHTML();
+      
+      // Inject compiled HTML into iframe safely
+      iframe.srcdoc = html;
+
+      // Update exported code display panel
+      if (state.activeTab === 'code') {
+        codeOutput.textContent = html;
+      }
+    }
+
+    // Helper functions
+    function escapeHtml(text) {
+      if (typeof text !== 'string') return '';
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Copy to clipboard with UI Toast
+    function copyHTMLToClipboard() {
+      const html = compileEmailHTML();
+      navigator.clipboard.writeText(html)
+        .then(() => {
+          showToast();
+        })
+        .catch(err => {
+          console.error("Failed to copy text: ", err);
+          alert("Could not copy automatically. Please copy the code manually from the HTML Code Exporter tab!");
+        });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('clipboard-toast');
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Downloader
+    function downloadHTML() {
+      const html = compileEmailHTML();
+      const eventTitle = document.getElementById('event-title').value;
+      const fileName = eventTitle.toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_email.html';
+      
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8;' });
+      const link = document.createElement("a");
+      
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  </script>
+</body>
+</html>
