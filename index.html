@@ -946,6 +946,18 @@
           <span class="form-help">Clear this date selector to completely remove the Countdown Box.</span>
         </div>
 
+        <div class="form-group" style="border: 1px solid #e08b00; border-radius: 8px; padding: 12px 14px; background: rgba(224,139,0,0.06);">
+          <label for="server-base-url" style="color: #e08b00;">⚡ Server URL (For Live Countdown Image)</label>
+          <input type="url" id="server-base-url" value="http://localhost:5050" placeholder="https://your-deployed-server.com">
+          <span class="form-help">
+            For <strong>local testing</strong>: keep as <code>http://localhost:5050</code>.<br>
+            For <strong>sending real emails</strong>: deploy this app to
+            <a href="https://railway.app" target="_blank" style="color:#e08b00;">Railway</a> or
+            <a href="https://render.com" target="_blank" style="color:#e08b00;">Render</a> (free),
+            then paste your public URL here. Recipients will see a live countdown every time they open the email.
+          </span>
+        </div>
+
         <div class="form-group">
           <label for="register-url">Registration Link URL</label>
           <input type="url" id="register-url" value="https://gcpc-diu.edu.bd/register">
@@ -1323,7 +1335,7 @@
       const inputs = [
         'event-title', 'event-subtitle', 'event-banner-url', 'email-subject', 'greeting-text', 
         'introduction-body', 'event-date', 'event-venue', 'event-fee', 'event-platform', 'event-audience',
-        'countdown-deadline', 'register-url', 'facebook-url',
+        'countdown-deadline', 'server-base-url', 'register-url', 'facebook-url',
         'social-fb-url', 'social-ig-url', 'social-li-url', 'social-tg-url', 'social-web-url',
         'contact-name', 'contact-role', 'contact-phone', 'contact-email',
         'logo-gcpc-url', 'logo-varsity-url', 'logo-cse-url'
@@ -1574,6 +1586,12 @@
 
       const eventBannerUrl = document.getElementById('event-banner-url').value;
       const eventAudience = document.getElementById('event-audience').value;
+
+      // Server base URL for live countdown image (no trailing slash)
+      const serverBaseUrlEl = document.getElementById('server-base-url');
+      const serverBaseUrl = (serverBaseUrlEl && serverBaseUrlEl.value.trim())
+        ? serverBaseUrlEl.value.trim().replace(/\/$/, '')
+        : 'http://localhost:5050';
 
       // Brand Exact Colors: Blue (#0a307a) & Golden Orange (#e08b00)
       const brandBlue = '#0a307a';
@@ -1841,12 +1859,12 @@
         }
 
         countdownHtml = `
-          <!-- LIVE COUNTDOWN TIMER BLOCK -->
+          <!-- LIVE COUNTDOWN TIMER — server-side image, refreshes on every email open -->
           <tr>
             <td align="center" style="padding-bottom: 25px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
                 <tr>
-                  <td style="padding: 25px 20px;">
+                  <td style="padding: 20px 20px 10px 20px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                       <tr>
                         <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px;">
@@ -1854,48 +1872,18 @@
                         </td>
                       </tr>
                       <tr>
-                        <td align="center">
-                          <div id="email-countdown-box" style="display: inline-block;">
-                            <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
-                              <tr>
-                                <!-- Days -->
-                                <td align="center" style="padding: 0 4px;">
-                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
-                                    <span id="mail-days" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcDays}</span>
-                                  </div>
-                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Days</div>
-                                </td>
-                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
-                                <!-- Hours -->
-                                <td align="center" style="padding: 0 4px;">
-                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
-                                    <span id="mail-hours" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcHours}</span>
-                                  </div>
-                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Hours</div>
-                                </td>
-                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
-                                <!-- Minutes -->
-                                <td align="center" style="padding: 0 4px;">
-                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
-                                    <span id="mail-minutes" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcMinutes}</span>
-                                  </div>
-                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Mins</div>
-                                </td>
-                                <td style="font-family: sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; padding-bottom: 18px; vertical-align: middle;">:</td>
-                                <!-- Seconds -->
-                                <td align="center" style="padding: 0 4px;">
-                                  <div class="mail-timer-box" style="background-color: #0c1220; border-radius: 6px; min-width: 50px; padding: 8px; border: 1px solid ${brandGold}; display: inline-block;">
-                                    <span id="mail-seconds" class="mail-timer-num" style="font-family: 'Fira Code', monospace, sans-serif; font-size: 20px; font-weight: 700; color: ${brandGold}; line-height: 1;">${calcSeconds}</span>
-                                  </div>
-                                  <div class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px;">Secs</div>
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
+                        <td align="center" style="padding-bottom: 10px;">
+                          <!-- Live countdown image: fetched fresh from server on every email open -->
+                          <img
+                            src="${serverBaseUrl}/countdown.png?deadline=${encodeURIComponent(countdownDeadline)}"
+                            alt="${calcDays} Days : ${calcHours} Hrs : ${calcMinutes} Mins : ${calcSeconds} Secs"
+                            width="520"
+                            style="display: block; max-width: 100%; height: auto; border: 0; margin: 0 auto;"
+                          />
                         </td>
                       </tr>
                       <tr>
-                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #64748b; padding-top: 15px; font-weight: 500;">
+                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #64748b; padding-top: 5px; padding-bottom: 10px; font-weight: 500;">
                           Registration Closes On: <strong style="color: ${brandGold};">${deadlineFormatted}</strong>
                         </td>
                       </tr>
