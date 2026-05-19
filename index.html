@@ -1512,6 +1512,26 @@
 
     // HTML Email Template Compilation Engine
     function compileEmailHTML() {
+      // Helper function for bulletproof Safari/cross-browser date parsing
+      function parseSafeDate(dateStr) {
+        if (!dateStr) return null;
+        var parts = dateStr.split(/\D+/);
+        if (parts.length >= 3) {
+          var y = parseInt(parts[0], 10);
+          var m = parseInt(parts[1], 10) - 1;
+          var d = parseInt(parts[2], 10);
+          var h = parseInt(parts[3], 10) || 0;
+          var min = parseInt(parts[4], 10) || 0;
+          var s = parseInt(parts[5], 10) || 0;
+          var date = new Date(y, m, d, h, min, s);
+          if (!isNaN(date.getTime())) {
+            return date;
+          }
+        }
+        var dateFallback = new Date(dateStr);
+        return isNaN(dateFallback.getTime()) ? null : dateFallback;
+      }
+
       // Fetch values from inputs
       const eventTitle = document.getElementById('event-title').value;
       const eventSubtitle = document.getElementById('event-subtitle').value;
@@ -1777,7 +1797,7 @@
       let countdownHtml = '';
       let deadlineFormatted = '';
       if (countdownDeadline) {
-        const d = new Date(countdownDeadline);
+        const d = parseSafeDate(countdownDeadline) || new Date();
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         const hours = d.getHours();
         const mins = d.getMinutes().toString().padStart(2, '0');
@@ -1790,8 +1810,8 @@
         let calcHours = '00';
         let calcMinutes = '00';
         let calcSeconds = '00';
-        const targetDate = new Date(countdownDeadline);
-        const currentDate = new Date();
+        const targetDate = d.getTime();
+        const currentDate = new Date().getTime();
         const diffMs = targetDate - currentDate;
         if (diffMs > 0) {
           const totalSecs = Math.floor(diffMs / 1000);
@@ -2145,16 +2165,10 @@
       
       <!-- Compact Brand Header Block (Clean, executive-style centered GCPC Logo) -->
       <tr>
-        <td align="center" class="logo-header-row" style="padding: 14px 30px; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff;">
-          <table border="0" cellpadding="0" cellspacing="0" class="white-capsule" style="margin: 0 auto; background: linear-gradient(#ffffff, #ffffff) !important; background-color: #ffffff; border-radius: 6px; padding: 6px 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); display: inline-block;">
-            <tr>
-              <td align="center" style="vertical-align: middle;">
-                <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: block;">
-                  <img src="${logoGcpc}" alt="DIU GCPC Logo" width="105" style="display: block; width: 105px; max-width: 105px; height: auto; border: 0;" />
-                </a>
-              </td>
-            </tr>
-          </table>
+        <td align="center" class="logo-header-row" style="padding: 16px 30px; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff;">
+          <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: inline-block;">
+            <img src="${logoGcpc}" alt="DIU GCPC Logo" width="115" style="display: block; width: 115px; max-width: 115px; height: auto; border: 0; margin: 0 auto;" />
+          </a>
         </td>
       </tr>
 
@@ -2248,31 +2262,44 @@
       
       // Robust Safari-friendly cross-browser date parsing
       var targetDate;
-      var parts = targetDateStr.split(/[-T:]/);
-      if (parts.length >= 5) {
-        targetDate = new Date(
-          parseInt(parts[0], 10),
-          parseInt(parts[1], 10) - 1,
-          parseInt(parts[2], 10),
-          parseInt(parts[3], 10),
-          parseInt(parts[4], 10)
-        ).getTime();
-      } else {
-        targetDate = new Date(targetDateStr).getTime();
+      var parts = targetDateStr.split(/\D+/);
+      if (parts.length >= 3) {
+        var y = parseInt(parts[0], 10);
+        var m = parseInt(parts[1], 10) - 1;
+        var d = parseInt(parts[2], 10);
+        var h = parseInt(parts[3], 10) || 0;
+        var min = parseInt(parts[4], 10) || 0;
+        var s = parseInt(parts[5], 10) || 0;
+        var parsedDate = new Date(y, m, d, h, min, s);
+        if (!isNaN(parsedDate.getTime())) {
+          targetDate = parsedDate.getTime();
+        }
       }
       
-      if (isNaN(targetDate)) return;
+      if (!targetDate) {
+        var fallback = new Date(targetDateStr);
+        if (!isNaN(fallback.getTime())) {
+          targetDate = fallback.getTime();
+        }
+      }
+      
+      if (!targetDate) return;
 
       function updateMailTimer() {
         var now = new Date().getTime();
         var distance = targetDate - now;
 
+        var elDays = document.getElementById("mail-days");
+        var elHours = document.getElementById("mail-hours");
+        var elMinutes = document.getElementById("mail-minutes");
+        var elSeconds = document.getElementById("mail-seconds");
+
         if (distance < 0) {
           clearInterval(timerInterval);
-          document.getElementById("mail-days").innerHTML = "00";
-          document.getElementById("mail-hours").innerHTML = "00";
-          document.getElementById("mail-minutes").innerHTML = "00";
-          document.getElementById("mail-seconds").innerHTML = "00";
+          if (elDays) elDays.innerHTML = "00";
+          if (elHours) elHours.innerHTML = "00";
+          if (elMinutes) elMinutes.innerHTML = "00";
+          if (elSeconds) elSeconds.innerHTML = "00";
           return;
         }
 
@@ -2281,10 +2308,10 @@
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById("mail-days").innerHTML = days.toString().padStart(2, '0');
-        document.getElementById("mail-hours").innerHTML = hours.toString().padStart(2, '0');
-        document.getElementById("mail-minutes").innerHTML = minutes.toString().padStart(2, '0');
-        document.getElementById("mail-seconds").innerHTML = seconds.toString().padStart(2, '0');
+        if (elDays) elDays.innerHTML = days.toString().padStart(2, '0');
+        if (elHours) elHours.innerHTML = hours.toString().padStart(2, '0');
+        if (elMinutes) elMinutes.innerHTML = minutes.toString().padStart(2, '0');
+        if (elSeconds) elSeconds.innerHTML = seconds.toString().padStart(2, '0');
       }
 
       updateMailTimer();
