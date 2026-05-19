@@ -2090,7 +2090,13 @@
         color: #ffffff !important;
       }
       /* Prevent colors inverting or turning purple under dark-mode client engines */
+      /* Triple-lock logo row white even when parent card goes dark */
       .logo-header-row {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        background-image: none !important;
+      }
+      .logo-header-row td, .logo-header-row a {
         background-color: #ffffff !important;
         background: #ffffff !important;
       }
@@ -2179,7 +2185,7 @@
       
       <!-- Compact Brand Header Block (Clean, executive-style centered GCPC Logo) -->
       <tr>
-        <td align="center" class="logo-header-row" style="padding: 16px 30px; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff;">
+        <td align="center" class="logo-header-row" style="padding: 16px 30px; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff; background: #ffffff;">
           <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: inline-block;">
             <img src="${logoGcpc}" alt="DIU GCPC Logo" width="115" style="display: block; width: 115px; max-width: 115px; height: auto; border: 0; margin: 0 auto;" />
           </a>
@@ -2268,70 +2274,10 @@
     </table>
   </center>
 
-  <!-- Embed Embedded Countdown Animation Engine Script -->
-  <script type="text/javascript">
-    (function() {
-      var targetDateStr = "${countdownDeadline}";
-      if (!targetDateStr) return;
-      
-      // Robust Safari-friendly cross-browser date parsing
-      var targetDate;
-      var parts = targetDateStr.split(/\D+/);
-      if (parts.length >= 3) {
-        var y = parseInt(parts[0], 10);
-        var m = parseInt(parts[1], 10) - 1;
-        var d = parseInt(parts[2], 10);
-        var h = parseInt(parts[3], 10) || 0;
-        var min = parseInt(parts[4], 10) || 0;
-        var s = parseInt(parts[5], 10) || 0;
-        var parsedDate = new Date(y, m, d, h, min, s);
-        if (!isNaN(parsedDate.getTime())) {
-          targetDate = parsedDate.getTime();
-        }
-      }
-      
-      if (!targetDate) {
-        var fallback = new Date(targetDateStr);
-        if (!isNaN(fallback.getTime())) {
-          targetDate = fallback.getTime();
-        }
-      }
-      
-      if (!targetDate) return;
-
-      function updateMailTimer() {
-        var now = new Date().getTime();
-        var distance = targetDate - now;
-
-        var elDays = document.getElementById("mail-days");
-        var elHours = document.getElementById("mail-hours");
-        var elMinutes = document.getElementById("mail-minutes");
-        var elSeconds = document.getElementById("mail-seconds");
-
-        if (distance < 0) {
-          clearInterval(timerInterval);
-          if (elDays) elDays.innerHTML = "00";
-          if (elHours) elHours.innerHTML = "00";
-          if (elMinutes) elMinutes.innerHTML = "00";
-          if (elSeconds) elSeconds.innerHTML = "00";
-          return;
-        }
-
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        if (elDays) elDays.innerHTML = days.toString().padStart(2, '0');
-        if (elHours) elHours.innerHTML = hours.toString().padStart(2, '0');
-        if (elMinutes) elMinutes.innerHTML = minutes.toString().padStart(2, '0');
-        if (elSeconds) elSeconds.innerHTML = seconds.toString().padStart(2, '0');
-      }
-
-      updateMailTimer();
-      var timerInterval = setInterval(updateMailTimer, 1000);
-    })();
-  <\/script>
+  <!-- NOTE: Email clients (Gmail, Outlook, etc.) strip all <script> tags for security.
+       The countdown values above (Days/Hours/Mins/Secs) are pre-calculated at the
+       exact moment this email is compiled and represent the accurate remaining time.
+       This is the correct, universally compatible approach for email timers. -->
 
 </body>
 </html>`;
