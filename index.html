@@ -948,13 +948,10 @@
 
         <div class="form-group" style="border: 1px solid #e08b00; border-radius: 8px; padding: 12px 14px; background: rgba(224,139,0,0.06);">
           <label for="server-base-url" style="color: #e08b00;">⚡ Server URL (For Live Countdown Image)</label>
-          <input type="url" id="server-base-url" value="http://localhost:5050" placeholder="https://your-deployed-server.com">
+          <input type="url" id="server-base-url" value="https://gcpc-mail.up.railway.app" placeholder="https://your-deployed-server.com">
           <span class="form-help">
-            For <strong>local testing</strong>: keep as <code>http://localhost:5050</code>.<br>
-            For <strong>sending real emails</strong>: deploy this app to
-            <a href="https://railway.app" target="_blank" style="color:#e08b00;">Railway</a> or
-            <a href="https://render.com" target="_blank" style="color:#e08b00;">Render</a> (free),
-            then paste your public URL here. Recipients will see a live countdown every time they open the email.
+            Live countdown image is served from your Railway deployment.<br>
+            Every time a recipient opens the email, they see the <strong>real current remaining time</strong>.
           </span>
         </div>
 
