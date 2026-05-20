@@ -1592,24 +1592,13 @@
       let heroBannerHtml = '';
       if (eventBannerUrl) {
         const hasTitleOrSubtitle = !!(eventTitle || eventSubtitle);
-        const bannerBorder = hasTitleOrSubtitle ? '' : `border-bottom: 4px solid ${brandGold};`;
         
-        heroBannerHtml = `
-          <!-- CUSTOM IMAGE HERO BANNER -->
-          <tr>
-            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; ${bannerBorder}">
-              <a href="${registerUrl || socialWeb}" target="_blank" style="text-decoration: none; display: block;">
-                <img src="${eventBannerUrl}" alt="Event Banner" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;" />
-              </a>
-            </td>
-          </tr>
-        `;
-
+        let titleBlockHtml = '';
         if (hasTitleOrSubtitle) {
-          heroBannerHtml += `
-            <!-- EVENT TITLE & MOTTO BLOCK UNDER CUSTOM BANNER -->
+          titleBlockHtml = `
+            <!-- EVENT TITLE & MOTTO BLOCK ABOVE CUSTOM BANNER -->
             <tr>
-              <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; padding: 30px 20px; position: relative; border-bottom: 4px solid ${brandGold};">
+              <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; padding: 30px 20px; position: relative;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;">
                   ${eventTitle ? `
                   <tr>
@@ -1630,6 +1619,19 @@
             </tr>
           `;
         }
+
+        const imageBlockHtml = `
+          <!-- CUSTOM IMAGE HERO BANNER -->
+          <tr>
+            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; border-bottom: 4px solid ${brandGold};">
+              <a href="${registerUrl || socialWeb}" target="_blank" style="text-decoration: none; display: block;">
+                <img src="${eventBannerUrl}" alt="Event Banner" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;" />
+              </a>
+            </td>
+          </tr>
+        `;
+
+        heroBannerHtml = titleBlockHtml + imageBlockHtml;
       } else {
         heroBannerHtml = `
           <!-- TEXT GRADIENT HERO BANNER -->
