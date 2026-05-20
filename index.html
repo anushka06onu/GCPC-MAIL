@@ -941,18 +941,9 @@
         </div>
 
         <div class="form-group">
-          <label for="countdown-deadline">Registration Deadline (For Timer)</label>
+          <label for="countdown-deadline">Registration Deadline (Closes On)</label>
           <input type="datetime-local" id="countdown-deadline" value="2026-06-10T23:59">
-          <span class="form-help">Clear this date selector to completely remove the Countdown Box.</span>
-        </div>
-
-        <div class="form-group" style="border: 1px solid #e08b00; border-radius: 8px; padding: 12px 14px; background: rgba(224,139,0,0.06);">
-          <label for="server-base-url" style="color: #e08b00;">⚡ Server URL (For Live Countdown Image)</label>
-          <input type="url" id="server-base-url" value="https://gcpc-mail.up.railway.app" placeholder="https://your-deployed-server.com">
-          <span class="form-help">
-            Live countdown image is served from your Railway deployment.<br>
-            Every time a recipient opens the email, they see the <strong>real current remaining time</strong>.
-          </span>
+          <span class="form-help">Clear this date selector to completely remove the Registration Deadline block.</span>
         </div>
 
         <div class="form-group">
@@ -1835,7 +1826,7 @@
         `;
       }
 
-      // 4. CONDITIONAL COUNTDOWN BLOCK (Hide if deadline selector empty)
+      // 4. CONDITIONAL REGISTRATION DEADLINE BLOCK (Hide if deadline selector empty)
       let countdownHtml = '';
       let deadlineFormatted = '';
       if (countdownDeadline) {
@@ -1847,59 +1838,16 @@
         const displayHours = hours % 12 || 12;
         deadlineFormatted = `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} (${displayHours}:${mins} ${ampm})`;
 
-        // Calculate live static snapshot values at compilation moment
-        let calcDays = '00';
-        let calcHours = '00';
-        let calcMinutes = '00';
-        let calcSeconds = '00';
-        const targetDate = d.getTime();
-        const currentDate = new Date().getTime();
-        const diffMs = targetDate - currentDate;
-        if (diffMs > 0) {
-          const totalSecs = Math.floor(diffMs / 1000);
-          const secs = totalSecs % 60;
-          const totalMins = Math.floor(totalSecs / 60);
-          const minsVal = totalMins % 60;
-          const totalHours = Math.floor(totalMins / 60);
-          const hoursVal = totalHours % 24;
-          const days = Math.floor(totalHours / 24);
-
-          calcDays = String(days).padStart(2, '0');
-          calcHours = String(hoursVal).padStart(2, '0');
-          calcMinutes = String(minsVal).padStart(2, '0');
-          calcSeconds = String(secs).padStart(2, '0');
-        }
-
         countdownHtml = `
-          <!-- LIVE COUNTDOWN TIMER — server-side image, refreshes on every email open -->
+          <!-- REGISTRATION DEADLINE CARD -->
           <tr>
             <td align="center" style="padding-bottom: 25px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; border-left: 4px solid ${brandGold};">
                 <tr>
-                  <td style="padding: 20px 20px 10px 20px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                      <tr>
-                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px;">
-                          ⏳ Remaining Time for Registration
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" style="padding-bottom: 10px;">
-                          <!-- Live countdown image: fetched fresh from server on every email open -->
-                          <img
-                            src="${serverBaseUrl}/countdown.png?deadline=${encodeURIComponent(countdownDeadline)}"
-                            alt="${calcDays} Days : ${calcHours} Hrs : ${calcMinutes} Mins : ${calcSeconds} Secs"
-                            width="520"
-                            style="display: block; max-width: 100%; height: auto; border: 0; margin: 0 auto;"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #475569; padding-top: 5px; padding-bottom: 10px; font-weight: 500;">
-                          Registration Closes On: <strong style="color: ${brandGold};">${deadlineFormatted}</strong>
-                        </td>
-                      </tr>
-                    </table>
+                  <td style="padding: 18px 20px; text-align: center;">
+                    <span class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.5; vertical-align: middle;">
+                      📅 Registration Closes On: <strong class="text-gold" style="color: ${brandGold}; margin-left: 2px;">${deadlineFormatted}</strong>
+                    </span>
                   </td>
                 </tr>
               </table>
