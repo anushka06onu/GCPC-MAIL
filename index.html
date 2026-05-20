@@ -1597,19 +1597,19 @@
         if (hasTitleOrSubtitle) {
           titleBlockHtml = `
             <!-- EVENT TITLE & MOTTO BLOCK ABOVE CUSTOM BANNER -->
-            <tr>
-              <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; padding: 30px 20px; position: relative;">
+            <tr style="background-color: ${brandBlue} !important; background: linear-gradient(${brandBlue}, ${brandBlue}) !important;">
+              <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue} !important; background: linear-gradient(${brandBlue}, ${brandBlue}) !important; padding: 30px 20px; position: relative;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;">
                   ${eventTitle ? `
                   <tr>
-                    <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: ${eventSubtitle ? '10px' : '0px'};">
+                    <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff !important; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: ${eventSubtitle ? '10px' : '0px'};">
                       ${escapeHtml(eventTitle)}
                     </td>
                   </tr>
                   ` : ''}
                   ${eventSubtitle ? `
                   <tr>
-                    <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold}; letter-spacing: 1px; text-transform: uppercase;">
+                    <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold} !important; letter-spacing: 1px; text-transform: uppercase;">
                       ${escapeHtml(eventSubtitle)}
                     </td>
                   </tr>
@@ -1622,8 +1622,8 @@
 
         const imageBlockHtml = `
           <!-- CUSTOM IMAGE HERO BANNER -->
-          <tr>
-            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; border-bottom: 4px solid ${brandGold};">
+          <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important; border-bottom: 4px solid ${brandGold};">
               <a href="${registerUrl || socialWeb}" target="_blank" style="text-decoration: none; display: block;">
                 <img src="${eventBannerUrl}" alt="Event Banner" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;" />
               </a>
@@ -1635,16 +1635,16 @@
       } else {
         heroBannerHtml = `
           <!-- TEXT GRADIENT HERO BANNER -->
-          <tr>
-            <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; padding: 40px 30px; position: relative; border-bottom: 4px solid ${brandGold};">
+          <tr style="background-color: ${brandBlue} !important; background: linear-gradient(${brandBlue}, ${brandBlue}) !important;">
+            <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue} !important; background: linear-gradient(${brandBlue}, ${brandBlue}) !important; padding: 40px 30px; position: relative; border-bottom: 4px solid ${brandGold};">
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;">
                 <tr>
-                  <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 10px;">
+                  <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff !important; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 10px;">
                     ${escapeHtml(eventTitle)}
                   </td>
                 </tr>
                 <tr>
-                  <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold}; letter-spacing: 1px; text-transform: uppercase;">
+                  <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold} !important; letter-spacing: 1px; text-transform: uppercase;">
                     ${escapeHtml(eventSubtitle)}
                   </td>
                 </tr>
@@ -1664,9 +1664,9 @@
             <td class="info-border" style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">📅</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Date & Time:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventDate)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">📅</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 100px;">Date & Time:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventDate)}</td>
                 </tr>
               </table>
             </td>
@@ -1679,9 +1679,9 @@
             <td class="info-border" style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">🎓</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Eligible For:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventAudience)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">🎓</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 100px;">Eligible For:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventAudience)}</td>
                 </tr>
               </table>
             </td>
@@ -1694,9 +1694,9 @@
             <td class="info-border" style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">📍</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 100px;">Location:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventVenue)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">📍</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 100px;">Location:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventVenue)}</td>
                 </tr>
               </table>
             </td>
@@ -1712,9 +1712,9 @@
             feeCell = `<td class="mobile-col" width="50%" style="vertical-align: top; padding-bottom: 10px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💵</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 60px;">Fee:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventFee)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">💵</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 60px;">Fee:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventFee)}</td>
                 </tr>
               </table>
             </td>`;
@@ -1722,9 +1722,9 @@
             platformCell = `<td class="mobile-col" width="50%" style="vertical-align: top; padding-bottom: 10px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💻</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 70px;">Platform:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">💻</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 70px;">Platform:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
                 </tr>
               </table>
             </td>`;
@@ -1732,9 +1732,9 @@
             feeCell = `<td class="mobile-col" width="100%" style="vertical-align: top; padding-bottom: 10px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💵</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 60px;">Fee:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventFee)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">💵</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 60px;">Fee:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventFee)}</td>
                 </tr>
               </table>
             </td>`;
@@ -1742,9 +1742,9 @@
             platformCell = `<td class="mobile-col" width="100%" style="vertical-align: top; padding-bottom: 10px;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                  <td style="width: 28px; vertical-align: middle; color: ${brandGold}; font-size: 16px;">💻</td>
-                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; width: 70px;">Platform:</td>
-                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
+                  <td style="width: 28px; vertical-align: middle; color: ${brandGold} !important; font-size: 16px;">💻</td>
+                  <td class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; width: 70px;">Platform:</td>
+                  <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #0f172a !important; font-weight: 600;">${escapeHtml(eventPlatform)}</td>
                 </tr>
               </table>
             </td>`;
@@ -1764,12 +1764,12 @@
 
         logisticsHtml = `
           <!-- LOGISTICS SECTION -->
-          <tr>
-            <td style="padding-bottom: 25px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border-left: 4px solid ${brandGold}; border-radius: 8px; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; overflow: hidden;">
-                <tr>
-                  <td style="padding: 15px 20px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+            <td style="padding-bottom: 25px; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important; border-left: 4px solid ${brandGold}; border-radius: 8px; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; overflow: hidden;">
+                <tr style="background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important;">
+                  <td style="padding: 15px 20px; background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important;">
                       ${dateRow}
                       ${audienceRow}
                       ${venueRow}
@@ -1795,8 +1795,8 @@
                 <td style="padding: 5px 0;">
                   <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
-                      <td valign="top" class="text-gold" style="width: 20px; font-family: sans-serif; font-size: 16px; color: ${brandGold}; line-height: 20px; font-weight: bold; padding-top: 1px;">•</td>
-                      <td valign="top" class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #334155; line-height: 1.5; font-weight: 400; padding-left: 4px;">
+                      <td valign="top" class="text-gold" style="width: 20px; font-family: sans-serif; font-size: 16px; color: ${brandGold} !important; line-height: 20px; font-weight: bold; padding-top: 1px;">•</td>
+                      <td valign="top" class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #334155 !important; line-height: 1.5; font-weight: 400; padding-left: 4px;">
                         ${escapeHtml(rule)}
                       </td>
                     </tr>
@@ -1859,13 +1859,13 @@
 
         countdownHtml = `
           <!-- REGISTRATION DEADLINE CARD -->
-          <tr>
-            <td align="center" style="padding-bottom: 25px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; border-left: 4px solid ${brandGold};">
-                <tr>
-                  <td style="padding: 18px 20px; text-align: center;">
-                    <span class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 600; color: #0f172a; line-height: 1.5; vertical-align: middle;">
-                      📅 Registration Closes On: <strong class="text-gold" style="color: ${brandGold}; margin-left: 2px;">${deadlineFormatted}</strong>
+          <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+            <td align="center" style="padding-bottom: 25px; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important; border: 1px solid #e2e8f0; border-radius: 12px; border-left: 4px solid ${brandGold};">
+                <tr style="background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important;">
+                  <td style="padding: 18px 20px; text-align: center; background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important;">
+                    <span class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 600; color: #0f172a !important; line-height: 1.5; vertical-align: middle;">
+                      📅 Registration Closes On: <strong class="text-gold" style="color: ${brandGold} !important; margin-left: 2px;">${deadlineFormatted}</strong>
                     </span>
                   </td>
                 </tr>
@@ -1880,12 +1880,12 @@
       if (facebookUrl) {
         secondaryCtaHtml = `
           <!-- SECONDARY ACTIONS -->
-          <tr>
-            <td align="center" style="padding: 0 0 20px 0;">
+          <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+            <td align="center" style="padding: 0 0 20px 0; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
               <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
                 <tr>
-                  <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; border-radius: 6px;">
-                    <a href="${facebookUrl}" target="_blank" class="btn-blue btn-facebook" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 600; color: #ffffff; text-decoration: none; padding: 10px 25px; display: inline-block; border-radius: 6px; border: 1px solid ${brandBlue}; transition: all 0.2s ease;">
+                  <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue} !important; background: linear-gradient(${brandBlue}, ${brandBlue}) !important; border-radius: 6px;">
+                    <a href="${facebookUrl}" target="_blank" class="btn-blue btn-facebook" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 600; color: #ffffff !important; text-decoration: none; padding: 10px 25px; display: inline-block; border-radius: 6px; border: 1px solid ${brandBlue}; transition: all 0.2s ease;">
                       👥 Visit Facebook Event
                     </a>
                   </td>
@@ -1900,22 +1900,22 @@
       const hasContact = !!contactName || !!contactRole || !!contactPhone || !!contactEmail;
       let contactHtml = '';
       if (hasContact) {
-        let nameLine = contactName ? `<p class="text-slate" style="margin: 4px 0 2px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a;">${escapeHtml(contactName)}</p>` : '';
-        let roleLine = contactRole ? `<p class="text-gold" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: ${brandGold}; font-weight: 600;">${escapeHtml(contactRole)}</p>` : '';
-        let phoneLine = contactPhone ? `<p class="text-muted" style="margin: 4px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569;">Mobile: ${escapeHtml(contactPhone)}</p>` : '';
-        let emailLine = contactEmail ? `<p class="text-muted" style="margin: 2px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569;">Email: <a href="mailto:${contactEmail}" class="link-blue" style="color: ${brandBlue}; text-decoration: none; font-weight: 600;">${escapeHtml(contactEmail)}</a></p>` : '';
+        let nameLine = contactName ? `<p class="text-slate" style="margin: 4px 0 2px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #0f172a !important;">${escapeHtml(contactName)}</p>` : '';
+        let roleLine = contactRole ? `<p class="text-gold" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: ${brandGold} !important; font-weight: 600;">${escapeHtml(contactRole)}</p>` : '';
+        let phoneLine = contactPhone ? `<p class="text-muted" style="margin: 4px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569 !important;">Mobile: ${escapeHtml(contactPhone)}</p>` : '';
+        let emailLine = contactEmail ? `<p class="text-muted" style="margin: 2px 0 0 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #475569 !important;">Email: <a href="mailto:${contactEmail}" class="link-blue" style="color: ${brandBlue} !important; text-decoration: none; font-weight: 600;">${escapeHtml(contactEmail)}</a></p>` : '';
 
         contactHtml = `
           <!-- CONTACT / QUERY BOX FOOTER -->
-          <tr>
-            <td style="padding: 0 30px 30px 30px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px dashed #cbd5e1; padding-top: 20px;">
-                <tr>
-                  <td>
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                      <tr>
-                        <td style="vertical-align: top;">
-                          <p class="text-muted" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">For any query:</p>
+          <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+            <td style="padding: 0 30px 30px 30px; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px dashed #cbd5e1; padding-top: 20px; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                  <td style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                      <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                        <td style="vertical-align: top; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+                          <p class="text-muted" style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569 !important; text-transform: uppercase; letter-spacing: 0.5px;">For any query:</p>
                           ${nameLine}
                           ${roleLine}
                           ${phoneLine}
@@ -2021,19 +2021,24 @@
 
     /* Force all backgrounds white/light */
     body, center, .main-bg {
-      background-color: #f1f5f9 !important;
+      background-color: #ffffff !important;
+      background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important;
+      background: linear-gradient(#ffffff, #ffffff) !important;
     }
     .responsive-table, .main-body-card {
       background-color: #ffffff !important;
+      background: linear-gradient(#ffffff, #ffffff) !important;
       border-color: #e2e8f0 !important;
     }
     .mobile-padding {
       background-color: #ffffff !important;
+      background: linear-gradient(#ffffff, #ffffff) !important;
     }
 
     /* Info cards always light */
     .info-card-bg {
       background-color: #f8fafc !important;
+      background: linear-gradient(#f8fafc, #f8fafc) !important;
       border-color: #e2e8f0 !important;
     }
     .info-border {
@@ -2069,8 +2074,7 @@
     .logo-header-row td,
     .logo-header-row a {
       background-color: #ffffff !important;
-      background: #ffffff !important;
-      background-image: none !important;
+      background: linear-gradient(#ffffff, #ffffff) !important;
     }
     /* Logo white capsule stays white */
     .white-capsule,
@@ -2078,17 +2082,17 @@
     .white-capsule table,
     .white-capsule tr {
       background-color: #ffffff !important;
-      background: #ffffff !important;
-      background-image: none !important;
+      background: linear-gradient(#ffffff, #ffffff) !important;
     }
     /* Brand colours locked */
     .brand-blue-bg {
       background-color: #0a307a !important;
-      background: #0a307a !important;
+      background: linear-gradient(#0a307a, #0a307a) !important;
     }
     /* Action buttons — keep on-brand */
     .btn-facebook {
       background-color: #0a307a !important;
+      background: linear-gradient(#0a307a, #0a307a) !important;
       border-color: #0a307a !important;
       color: #ffffff !important;
     }
@@ -2096,16 +2100,16 @@
     /* Gmail Android [data-ogsc] dark mode kill-switch */
     [data-ogsc] body,
     [data-ogsc] center,
-    [data-ogsc] .main-bg { background-color: #f1f5f9 !important; }
+    [data-ogsc] .main-bg { background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; }
     [data-ogsc] .responsive-table,
-    [data-ogsc] .main-body-card { background-color: #ffffff !important; }
-    [data-ogsc] .info-card-bg    { background-color: #f8fafc !important; }
+    [data-ogsc] .main-body-card { background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; }
+    [data-ogsc] .info-card-bg    { background-color: #f8fafc !important; background: linear-gradient(#f8fafc, #f8fafc) !important; }
     [data-ogsc] .text-slate       { color: #0f172a !important; }
     [data-ogsc] .text-muted       { color: #475569 !important; }
     [data-ogsc] .text-gold        { color: #e08b00 !important; }
     [data-ogsc] .logo-header-row,
-    [data-ogsc] .logo-header-row td { background-color: #ffffff !important; background: #ffffff !important; }
-    [data-ogsc] .brand-blue-bg    { background-color: #0a307a !important; }
+    [data-ogsc] .logo-header-row td { background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; }
+    [data-ogsc] .brand-blue-bg    { background-color: #0a307a !important; background: linear-gradient(#0a307a, #0a307a) !important; }
 
     /* iOS Blue Links */
     a[x-apple-data-detectors] {
@@ -2163,19 +2167,19 @@
     }
   </style>
 </head>
-<body class="main-bg" style="margin: 0; padding: 0; background-color: #f1f5f9 !important; color: #0f172a !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<body class="main-bg" style="margin: 0; padding: 0; background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important; color: #0f172a !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
 
-  <center class="main-bg" style="width: 100%; background-color: #f1f5f9 !important; padding: 30px 0;">
-    <table border="0" cellpadding="0" cellspacing="0" class="responsive-table main-body-card" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+  <center class="main-bg" style="width: 100%; background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important; padding: 30px 0;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
+    <table border="0" cellpadding="0" cellspacing="0" class="responsive-table main-body-card" width="100%" style="max-width: 600px; background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
       
       <!-- Compact Brand Header Block — fully locked white for ALL dark mode clients -->
-      <!--[if true]><table width="100%" bgcolor="#ffffff"><tr><td bgcolor="#ffffff"><![endif]-->
-      <tr bgcolor="#ffffff">
-        <td align="center" bgcolor="#ffffff" class="logo-header-row" data-ogsc="background-color: #ffffff" style="padding: 0; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff !important; background: #ffffff !important; mso-color-alt: #ffffff;">
+      <!--[if true]><table width="100%" bgcolor="#ffffff" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png"><tr><td bgcolor="#ffffff" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png"><![endif]-->
+      <tr bgcolor="#ffffff" style="background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+        <td align="center" bgcolor="#ffffff" class="logo-header-row" data-ogsc="background-color: #ffffff" style="padding: 0; text-align: center; border-bottom: 1px solid #f1f5f9; background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important; mso-color-alt: #ffffff;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
           <!-- White island wrapper: defeats Gmail Android dark mode inversion -->
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="background-color: #ffffff !important; background: #ffffff !important;">
-            <tr bgcolor="#ffffff">
-              <td align="center" bgcolor="#ffffff" style="padding: 16px 30px; background-color: #ffffff !important; background: #ffffff !important; mso-color-alt: #ffffff;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
+            <tr bgcolor="#ffffff" style="background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+              <td align="center" bgcolor="#ffffff" style="padding: 16px 30px; background-color: #ffffff !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; background: linear-gradient(#ffffff, #ffffff) !important; mso-color-alt: #ffffff;" background="https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png">
                 <a href="${socialWeb}" target="_blank" style="text-decoration: none; display: inline-block;">
                   <img src="${logoGcpc}" alt="DIU GCPC Logo" width="115" style="display: block; width: 115px; max-width: 115px; height: auto; border: 0; margin: 0 auto;" />
                 </a>
@@ -2189,18 +2193,18 @@
       ${heroBannerHtml}
 
       <!-- BODY EMAIL CONTENT -->
-      <tr>
-        <td class="mobile-padding" style="padding: 35px 30px 25px 30px; background-color: #ffffff;">
+      <tr style="background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
+        <td class="mobile-padding" style="padding: 35px 30px 25px 30px; background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important;">
           <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <!-- Greetings -->
             <tr>
-              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 700; color: #0f172a; padding-bottom: 12px;">
+              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 700; color: #0f172a !important; padding-bottom: 12px;">
                 ${escapeHtml(greetingText)}
               </td>
             </tr>
             <!-- Invitation Text -->
             <tr>
-              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; color: #334155; line-height: 1.6; padding-bottom: 25px; font-weight: 400;">
+              <td class="text-slate" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; color: #334155 !important; line-height: 1.6; padding-bottom: 25px; font-weight: 400;">
                 ${escapeHtml(introductionBody).replace(/\n/g, '<br/>')}
               </td>
             </tr>
