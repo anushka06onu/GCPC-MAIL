@@ -1,6 +1,11 @@
 const express = require('express');
 const path = require('path');
-const { createCanvas } = require('canvas');
+const { createCanvas, registerFont } = require('canvas');
+
+// Register Roboto fonts to guarantee perfect rendering on any platform (e.g. Linux / Railway)
+registerFont(path.join(__dirname, 'assets/Roboto-Bold.ttf'), { family: 'RobotoBold' });
+registerFont(path.join(__dirname, 'assets/Roboto-Regular.ttf'), { family: 'RobotoRegular' });
+
 const app = express();
 const PORT = process.env.PORT || 5050;
 
@@ -13,7 +18,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // Usage: /countdown.png?deadline=2026-05-23T17:59:00
 // Returns a dynamically generated PNG showing the CURRENT remaining time.
 // Every time an email client fetches this image, it gets a fresh render.
-// This is the only way to have a "live" countdown in email HTML.
+// Light-mode design: white background, always readable on any device/theme.
 // ─────────────────────────────────────────────────────────────────────────────
 app.get('/countdown.png', (req, res) => {
   const deadlineStr = req.query.deadline || '';
@@ -47,85 +52,92 @@ app.get('/countdown.png', (req, res) => {
   ];
 
   // ── Canvas dimensions ──────────────────────────────────────────────────────
+  // Scale 2x for retina sharpness
+  const SCALE = 2;
   const W = 520;
-  const H = 110;
-  const canvas = createCanvas(W, H);
+  const H = 120;
+  const canvas = createCanvas(W * SCALE, H * SCALE);
   const ctx = canvas.getContext('2d');
+  ctx.scale(SCALE, SCALE);
 
-  // ── Background ─────────────────────────────────────────────────────────────
-  // Dark card matching email countdown block
-  ctx.fillStyle = '#0d1526';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, W, H, 12);
-  ctx.fill();
+  // ── Light background ───────────────────────────────────────────────────────
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
 
-  // ── Subtle border ──────────────────────────────────────────────────────────
-  ctx.strokeStyle = '#e08b00';
+  // Outer rounded container — light card
+  ctx.fillStyle = '#f8fafc';
+  ctx.strokeStyle = '#e2e8f0';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.roundRect(0.75, 0.75, W - 1.5, H - 1.5, 12);
+  ctx.roundRect(10, 8, W - 20, H - 16, 10);
+  ctx.fill();
   ctx.stroke();
 
-  // ── Draw each time unit ────────────────────────────────────────────────────
-  const GOLD  = '#e08b00';
-  const WHITE = '#f1f5f9';
-  const MUTED = '#94a3b8';
+  // Gold left accent bar
+  ctx.fillStyle = '#e08b00';
+  ctx.beginPath();
+  ctx.roundRect(10, 8, 4, H - 16, [10, 0, 0, 10]);
+  ctx.fill();
 
-  const boxW  = 90;
-  const boxH  = 60;
-  const gap   = 18;         // gap between boxes
-  const colonW = 20;
+  // ── Colours ────────────────────────────────────────────────────────────────
+  const GOLD    = '#e08b00';
+  const DARK    = '#0f172a';   // number text — very dark, always readable
+  const MUTED   = '#64748b';   // label text
+
+  // ── Box layout ─────────────────────────────────────────────────────────────
+  const boxW  = 88;
+  const boxH  = 72;
+  const gap   = 10;
+  const colonW = 18;
   const totalBlockW = units.length * boxW + (units.length - 1) * (gap + colonW);
-  let x = (W - totalBlockW) / 2;
-  const boxY  = (H - boxH) / 2;
+  let x = (W - totalBlockW) / 2 + 4;  // +4 to account for left accent bar
+  const boxY = (H - boxH) / 2;
 
   units.forEach((unit, i) => {
-    // Box background
-    ctx.fillStyle = '#0c1220';
-    ctx.beginPath();
-    ctx.roundRect(x, boxY, boxW, boxH, 6);
-    ctx.fill();
-
-    // Box border
+    // White box with subtle border
+    ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = GOLD;
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.roundRect(x, boxY, boxW, boxH, 6);
+    ctx.roundRect(x, boxY, boxW, boxH, 8);
+    ctx.fill();
     ctx.stroke();
 
-    // Number
-    ctx.fillStyle = GOLD;
-    ctx.font = 'bold 26px monospace';
+    // Number — large, dark, bold
+    ctx.fillStyle = DARK;
+    ctx.font = '30px RobotoBold';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(unit.value, x + boxW / 2, boxY + boxH / 2 - 8);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(unit.value, x + boxW / 2, boxY + boxH / 2 + 4);
 
-    // Label
+    // Label — small, muted, below number
     ctx.fillStyle = MUTED;
-    ctx.font = '10px sans-serif';
+    ctx.font = '11px RobotoRegular';
     ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(unit.label, x + boxW / 2, boxY + boxH - 16);
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(unit.label, x + boxW / 2, boxY + boxH - 8);
 
     x += boxW;
 
     // Colon separator (skip after last)
     if (i < units.length - 1) {
       ctx.fillStyle = GOLD;
-      ctx.font = 'bold 22px monospace';
+      ctx.font = '24px RobotoBold';
       ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(':', x + colonW / 2, boxY + boxH / 2 - 8);
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(':', x + colonW / 2, boxY + boxH / 2 + 4);
       x += colonW + gap;
     }
   });
 
   // ── Send PNG response ──────────────────────────────────────────────────────
   res.setHeader('Content-Type', 'image/png');
-  // No-cache: every email open fetches a fresh image
+  // No-cache: every email open fetches a fresh image with current time
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
+  // Allow email clients to fetch across origins
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   canvas.createPNGStream().pipe(res);
 });

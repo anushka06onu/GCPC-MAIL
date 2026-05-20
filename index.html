@@ -1273,6 +1273,12 @@
     
     // Initializer
     window.addEventListener('DOMContentLoaded', () => {
+      // Dynamically set server base URL to current origin to handle localhost/production seamlessly
+      const serverUrlInput = document.getElementById('server-base-url');
+      if (serverUrlInput) {
+        serverUrlInput.value = window.location.origin;
+      }
+
       renderRulesList();
       bindInputListeners();
       
@@ -1408,7 +1414,7 @@
       
       if (activePreviewTheme === 'light') {
         style.innerHTML = `
-          /* Force Light Mode Overrides */
+          /* Force Light Mode Overrides — reset ALL dark-mode class overrides */
           body, center, .main-bg {
             background-color: #f1f5f9 !important;
           }
@@ -1416,6 +1422,15 @@
             background-color: #ffffff !important;
             border-color: #e2e8f0 !important;
           }
+          /* ✅ Fix: reset info card & border back to light colours */
+          .info-card-bg {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+          }
+          .info-border {
+            border-bottom-color: #e2e8f0 !important;
+          }
+          /* ✅ Fix: make all text classes use light-mode readable colours */
           .text-slate {
             color: #0f172a !important;
           }
@@ -1426,7 +1441,7 @@
             color: #e08b00 !important;
           }
           .link-blue {
-            color: #e08b00 !important;
+            color: #0a307a !important;
           }
           .hero-title-text {
             color: #ffffff !important;
@@ -1859,12 +1874,12 @@
           <!-- LIVE COUNTDOWN TIMER — server-side image, refreshes on every email open -->
           <tr>
             <td align="center" style="padding-bottom: 25px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" class="info-card-bg" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; border-left: 4px solid ${brandGold};">
                 <tr>
                   <td style="padding: 20px 20px 10px 20px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                       <tr>
-                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px;">
+                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px;">
                           ⏳ Remaining Time for Registration
                         </td>
                       </tr>
@@ -1880,7 +1895,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #64748b; padding-top: 5px; padding-bottom: 10px; font-weight: 500;">
+                        <td align="center" class="text-muted" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; color: #475569; padding-top: 5px; padding-bottom: 10px; font-weight: 500;">
                           Registration Closes On: <strong style="color: ${brandGold};">${deadlineFormatted}</strong>
                         </td>
                       </tr>
@@ -2001,7 +2016,7 @@
 
       // Construct and return the full inline-styled, email-safe HTML
       return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" style="color-scheme: only light !important;">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" style="color-scheme: only light !important; -webkit-color-scheme: light; forced-color-adjust: none;">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -2011,8 +2026,8 @@
   <title>${escapeHtml(eventTitle)}</title>
   <style type="text/css">
     :root {
-      color-scheme: only light;
-      supported-color-schemes: only light;
+      color-scheme: only light !important;
+      supported-color-schemes: only light !important;
     }
     /* Client-specific Resets */
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
@@ -2022,88 +2037,108 @@
     /* Reset Styles */
     img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
     table { border-collapse: collapse !important; }
-    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #f1f5f9; }
+    body {
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+    }
 
-    /* Brand Consistency overrides to lock Executive Colors */
-    .logo-header-row {
+    /* ═══════════════════════════════════════════════════════════════
+       LOCK EVERYTHING TO LIGHT MODE — no dark mode ever.
+       These rules defeat Gmail Android, Apple Mail, Samsung Mail
+       and any other client that tries to invert colours.
+    ═══════════════════════════════════════════════════════════════ */
+
+    /* Force all backgrounds white/light */
+    body, center, .main-bg {
+      background-color: #f1f5f9 !important;
+    }
+    .responsive-table, .main-body-card {
+      background-color: #ffffff !important;
+      border-color: #e2e8f0 !important;
+    }
+    .mobile-padding {
+      background-color: #ffffff !important;
+    }
+
+    /* Info cards always light */
+    .info-card-bg {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    .info-border {
+      border-bottom-color: #e2e8f0 !important;
+    }
+
+    /* Text always dark and readable */
+    .text-slate {
+      color: #0f172a !important;
+    }
+    .text-muted {
+      color: #475569 !important;
+    }
+    .text-gold {
+      color: #e08b00 !important;
+    }
+    .link-blue {
+      color: #0a307a !important;
+    }
+
+    /* Hero always on brand */
+    .hero-title-text {
+      color: #ffffff !important;
+    }
+    .hero-subtitle-text {
+      color: #e08b00 !important;
+    }
+
+    /* Logo header row always white — defeats Gmail Android dark inversion */
+    .logo-header-row,
+    .logo-header-row table,
+    .logo-header-row tr,
+    .logo-header-row td,
+    .logo-header-row a {
       background-color: #ffffff !important;
       background: #ffffff !important;
+      background-image: none !important;
     }
+    /* Logo white capsule stays white */
+    .white-capsule,
+    .white-capsule td,
+    .white-capsule table,
+    .white-capsule tr {
+      background-color: #ffffff !important;
+      background: #ffffff !important;
+      background-image: none !important;
+    }
+    /* Brand colours locked */
     .brand-blue-bg {
       background-color: #0a307a !important;
       background: #0a307a !important;
     }
-
-    /* 🌙 GORGEOUS NATIVE DARK & LIGHT MODE FRIENDLY OVERRIDES */
-    @media (prefers-color-scheme: dark) {
-      /* Native background inversion for dark mode environments */
-      body, center, .main-bg {
-        background-color: #070b13 !important;
-      }
-      .responsive-table, .main-body-card, .mobile-padding {
-        background-color: #0d1526 !important;
-        border-color: rgba(255, 255, 255, 0.08) !important;
-      }
-      
-      /* Keep the brand logo pills solid white so transparent letters are fully readable */
-      .white-capsule {
-        background-color: #ffffff !important;
-        background: linear-gradient(#ffffff, #ffffff) !important;
-      }
-      .white-capsule td {
-        background-color: #ffffff !important;
-        background: linear-gradient(#ffffff, #ffffff) !important;
-      }
-      /* Contrast-enhanced colors for text elements in dark mode */
-      .text-slate {
-        color: #f1f5f9 !important; /* Soft premium white/light-gray */
-      }
-      .text-muted {
-        color: #94a3b8 !important; /* Premium muted gray */
-      }
-      .text-gold {
-        color: #fbbf24 !important; /* Bright high-contrast amber gold */
-      }
-      .link-blue {
-        color: #fbbf24 !important; /* Underline gold contact links in dark mode */
-      }
-      /* Hero banner title/subtitle text */
-      .hero-title-text {
-        color: #ffffff !important;
-      }
-      .hero-subtitle-text {
-        color: #fbbf24 !important;
-      }
-      /* Prevent action button shifting to purple and keep it brand-appropriate */
-      .btn-facebook {
-        background-color: #1877F2 !important;
-        border-color: #1877F2 !important;
-        color: #ffffff !important;
-      }
-      /* Gmail dark mode: [data-ogsc] override + full descendant lock for logo row */
-      .logo-header-row,
-      .logo-header-row table,
-      .logo-header-row tr,
-      .logo-header-row td,
-      .logo-header-row a,
-      [data-ogsc] .logo-header-row {
-        background-color: #ffffff !important;
-        background: #ffffff !important;
-        background-image: none !important;
-        color-scheme: light !important;
-      }
-      .brand-blue-bg {
-        background-color: #0a307a !important;
-        background: #0a307a !important;
-      }
-      .info-card-bg {
-        background-color: #131f37 !important;
-        border-color: rgba(255, 255, 255, 0.08) !important;
-      }
-      .info-border {
-        border-bottom-color: rgba(255, 255, 255, 0.08) !important;
-      }
+    /* Action buttons — keep on-brand */
+    .btn-facebook {
+      background-color: #0a307a !important;
+      border-color: #0a307a !important;
+      color: #ffffff !important;
     }
+
+    /* Gmail Android [data-ogsc] dark mode kill-switch */
+    [data-ogsc] body,
+    [data-ogsc] center,
+    [data-ogsc] .main-bg { background-color: #f1f5f9 !important; }
+    [data-ogsc] .responsive-table,
+    [data-ogsc] .main-body-card { background-color: #ffffff !important; }
+    [data-ogsc] .info-card-bg    { background-color: #f8fafc !important; }
+    [data-ogsc] .text-slate       { color: #0f172a !important; }
+    [data-ogsc] .text-muted       { color: #475569 !important; }
+    [data-ogsc] .text-gold        { color: #e08b00 !important; }
+    [data-ogsc] .logo-header-row,
+    [data-ogsc] .logo-header-row td { background-color: #ffffff !important; background: #ffffff !important; }
+    [data-ogsc] .brand-blue-bg    { background-color: #0a307a !important; }
 
     /* iOS Blue Links */
     a[x-apple-data-detectors] {
@@ -2115,7 +2150,7 @@
       line-height: inherit !important;
     }
 
-    /* 📱 HIGHLY ROBUST RESPONSIVE MEDIA QUERIES */
+    /* 📱 RESPONSIVE MEDIA QUERIES */
     @media only screen and (max-width: 600px) {
       .responsive-table {
         width: 100% !important;
@@ -2142,7 +2177,6 @@
         font-size: 20px !important;
         line-height: 1.3 !important;
       }
-      /* Prevent text content from blowing out layout */
       .responsive-table td,
       .responsive-table span,
       .responsive-table div,
@@ -2150,17 +2184,9 @@
       .responsive-table p {
         word-break: break-word !important;
       }
-      /* Countdown responsive scaling */
-      .mail-timer-box {
-        min-width: 38px !important;
-        padding: 6px 4px !important;
-      }
-      .mail-timer-num {
-        font-size: 16px !important;
-      }
     }
 
-    /* Hover States in supported mail clients */
+    /* Hover States */
     .btn-orange:hover {
       background-color: #be7500 !important;
       box-shadow: 0 4px 12px rgba(224, 139, 0, 0.3) !important;
@@ -2170,9 +2196,9 @@
     }
   </style>
 </head>
-<body class="main-bg" style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+<body class="main-bg" style="margin: 0; padding: 0; background-color: #f1f5f9 !important; color: #0f172a !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
 
-  <center class="main-bg" style="width: 100%; background-color: #f1f5f9; padding: 30px 0;">
+  <center class="main-bg" style="width: 100%; background-color: #f1f5f9 !important; padding: 30px 0;">
     <table border="0" cellpadding="0" cellspacing="0" class="responsive-table main-body-card" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
       
       <!-- Compact Brand Header Block — fully locked white for ALL dark mode clients -->
