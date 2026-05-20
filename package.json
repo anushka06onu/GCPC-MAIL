@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^5.2.10",
-    "canvas": "^3.2.3",
     "express": "^4.19.2",
     "roboto-fontface": "^0.10.0",
     "roboto-npm-webfont": "^1.0.1"

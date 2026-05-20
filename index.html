@@ -1264,12 +1264,6 @@
     
     // Initializer
     window.addEventListener('DOMContentLoaded', () => {
-      // Dynamically set server base URL to current origin to handle localhost/production seamlessly
-      const serverUrlInput = document.getElementById('server-base-url');
-      if (serverUrlInput) {
-        serverUrlInput.value = window.location.origin;
-      }
-
       renderRulesList();
       bindInputListeners();
       
@@ -1329,7 +1323,7 @@
       const inputs = [
         'event-title', 'event-subtitle', 'event-banner-url', 'email-subject', 'greeting-text', 
         'introduction-body', 'event-date', 'event-venue', 'event-fee', 'event-platform', 'event-audience',
-        'countdown-deadline', 'server-base-url', 'register-url', 'facebook-url',
+        'countdown-deadline', 'register-url', 'facebook-url',
         'social-fb-url', 'social-ig-url', 'social-li-url', 'social-tg-url', 'social-web-url',
         'contact-name', 'contact-role', 'contact-phone', 'contact-email',
         'logo-gcpc-url', 'logo-varsity-url', 'logo-cse-url'
@@ -1590,12 +1584,6 @@
       const eventBannerUrl = document.getElementById('event-banner-url').value;
       const eventAudience = document.getElementById('event-audience').value;
 
-      // Server base URL for live countdown image (no trailing slash)
-      const serverBaseUrlEl = document.getElementById('server-base-url');
-      const serverBaseUrl = (serverBaseUrlEl && serverBaseUrlEl.value.trim())
-        ? serverBaseUrlEl.value.trim().replace(/\/$/, '')
-        : 'http://localhost:5050';
-
       // Brand Exact Colors: Blue (#0a307a) & Golden Orange (#e08b00)
       const brandBlue = '#0a307a';
       const brandGold = '#e08b00';
@@ -1603,16 +1591,45 @@
       // Custom Banner Render Logic
       let heroBannerHtml = '';
       if (eventBannerUrl) {
+        const hasTitleOrSubtitle = !!(eventTitle || eventSubtitle);
+        const bannerBorder = hasTitleOrSubtitle ? '' : `border-bottom: 4px solid ${brandGold};`;
+        
         heroBannerHtml = `
           <!-- CUSTOM IMAGE HERO BANNER -->
           <tr>
-            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; border-bottom: 4px solid ${brandGold};">
+            <td align="center" style="font-size: 0; line-height: 0; background-color: #ffffff; ${bannerBorder}">
               <a href="${registerUrl || socialWeb}" target="_blank" style="text-decoration: none; display: block;">
                 <img src="${eventBannerUrl}" alt="Event Banner" width="600" style="display: block; width: 100%; max-width: 600px; height: auto;" />
               </a>
             </td>
           </tr>
         `;
+
+        if (hasTitleOrSubtitle) {
+          heroBannerHtml += `
+            <!-- EVENT TITLE & MOTTO BLOCK UNDER CUSTOM BANNER -->
+            <tr>
+              <td align="center" class="brand-blue-bg" style="background-color: ${brandBlue}; padding: 30px 20px; position: relative; border-bottom: 4px solid ${brandGold};">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;">
+                  ${eventTitle ? `
+                  <tr>
+                    <td align="center" class="hero-title hero-title-text" style="font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 800; color: #ffffff; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: ${eventSubtitle ? '10px' : '0px'};">
+                      ${escapeHtml(eventTitle)}
+                    </td>
+                  </tr>
+                  ` : ''}
+                  ${eventSubtitle ? `
+                  <tr>
+                    <td align="center" class="hero-subtitle-text" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; color: ${brandGold}; letter-spacing: 1px; text-transform: uppercase;">
+                      ${escapeHtml(eventSubtitle)}
+                    </td>
+                  </tr>
+                  ` : ''}
+                </table>
+              </td>
+            </tr>
+          `;
+        }
       } else {
         heroBannerHtml = `
           <!-- TEXT GRADIENT HERO BANNER -->
