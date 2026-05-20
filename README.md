@@ -1,101 +1,113 @@
-# 📧 DIU GCPC Email Suite — Premium Workspace & Interactive Builder
+# 📧 DIU GCPC Email Suite — Premium Interactive Builder
 
-> **Stunning, highly interactive, and production-grade HTML Email Builder and Live Previewer workspace designed exclusively for the DIU Girls' Computer Programming Club (DIU GCPC).**
-
-Welcome to the ultimate professional utility designed for the **DIU Girls' Computer Programming Club (DIU GCPC)**. This dashboard lets club executives customize, preview, and export premium, responsive academic event invitation emails that render perfectly across all modern desktop, web, and mobile email clients (including Outlook, Apple Mail, and Gmail mobile apps).
+> **A stunning, production-grade HTML Email Builder and Interactive Previewer workspace designed and developed solely by me to streamline outreach for the DIU Girls' Computer Programming Club (DIU GCPC).**
 
 ---
 
-## 🎨 Professional Brand Layout & Premium Assets
+## 🌟 Project Overview
 
-The entire visual style is anchored around **DIU GCPC's** official brand color palette and high-resolution marketing elements:
-*   **GCPC Royal Blue:** `#0a307a`
-*   **GCPC Warm Amber Gold:** `#e08b00`
+As the President of the **DIU Girls' Computer Programming Club (DIU GCPC)**, I designed and built this professional tool to solve a critical challenge: crafting gorgeous, high-converting, and fully responsive academic event invitations that look absolutely flawless on any device and email client (including Gmail, Outlook, Apple Mail, and Samsung Mail).
 
-### 1. 💊 Centered Top Brand Logo Pill Capsule
-*   **Compact Dimensions:** Sized to exactly **`105px`** wide (`width="105"` / `max-width: 105px`) with tight cell padding to create a highly visual, clean, and professional appearance.
-*   **Inversion Protection Capsule:** The logo is encased inside a centered, solid-white capsule pill:
-    ```html
-    <table border="0" cellpadding="0" cellspacing="0" class="white-capsule" style="background: linear-gradient(#ffffff, #ffffff) !important; background-color: #ffffff; border-radius: 6px; padding: 6px 16px;">
-    ```
-    This prevents transparent logos from fading into the dark background when systems/email clients invert colors. The transparent GCPC logo remains perfectly legible, clean, and beautifully framed.
-
-### 2. ⚡ Custom Hero Flyer Banner & Smart Fallbacks
-You can choose how the email header banner renders:
-*   **Custom Flyer Image URL:** Paste any hosted image link (e.g., event banner, poster flyer) into the sidebar form. The compiler immediately replaces the default layout with a fully fluid, edge-to-edge image banner.
-*   **Sleek Text-Gradient Fallback:** If left blank, the email auto-compiles to render a premium Royal Blue-to-Gold linear gradient header displaying your **Event Title** and **Motto/Theme Tagline** in high-contrast crisp typography.
-
-### 3. ⏱️ Pre-Calculated Live Countdown Snapshots
-Since standard email inbox Compose editors disable JavaScript for security, a dynamic countdown script in a static email would fail or render static placeholders. We solved this with a **dynamic copy-time pre-compiler**:
-*   The moment you click **Copy Email HTML** or **Download HTML**, the compiler calculates the exact active gap between the current time and your selected deadline (`May 23, 2026 at 5:59 PM`).
-*   It hardcodes these pre-calculated live digits (e.g., **`04` Days, `23` Hours, `38` Mins**) directly into the static HTML code.
-*   **No Broken Placeholders:** Recipients see a pristine, live remaining time snapshot when opening their email, with the countdown container gracefully omitting itself if no registration deadline is supplied.
-
-### 🌙 4. Native Light & Dark Mode Compatibility
-Instead of forcing the entire email layout to remain solid white (which strains eyes and violates modern OS preferences), the template **fully supports native color-scheme inverting**:
-*   **Backgrounds:** Page backdrops (`#f1f5f9`) and the central body card (`#ffffff`) adapt naturally to dark-mode screens.
-*   **High-Contrast Text Classing:** Mapped to dedicated typography classes (`.text-slate`, `.text-muted`, `.text-gold`), primary paragraph texts automatically shift to comfortable, premium off-whites (`#f1f5f9`) in dark environments.
-*   **Action Button Shifting Prevention:** Gmail aggressively shifts dark blue buttons to a clashing violet color. We mapped `.btn-facebook` explicitly in prefers-color-scheme media queries to official brand-blue (`#1877F2`), keeping it pristine and visually consistent!
-*   **Golden Contact Hyperlinks:** Under dark-mode viewports, active contact email links are overridden to a bright, readable amber gold (`#fbbf24`), keeping them fully legible against dark rows.
-
-### 5. 💼 Premium Footer & Swapped LinkedIn Badge
-*   **Varsity Branding White Capsule:** Supportive logos (Daffodil International University and CSE Department) are hosted inside a high-contrast white rounded capsule. Their **exact, original brand colors (green, blue, and teal)** are completely preserved.
-*   **Vibrant Social Icons (LinkedIn Swapped):** The five official networks are represented with custom high-contrast, colorful circular badges:
-    *   🌐 **Website:** Custom GCPC Gold (`#e08b00`) — [GCPC Site](https://gcpc.daffodilvarsity.edu.bd/)
-    *   📘 **Facebook Page:** Deep Blue (`#1877F2`) — [DIUGCPC](https://www.facebook.com/DIUGCPC)
-    *   📸 **Instagram:** Vibrant Magenta (`#E1306C`) — [diu_gcpc](https://www.instagram.com/diu_gcpc)
-    *   💼 **LinkedIn Swapped:** Professional Cyan-Blue (`#0077B5`) — [gcpc-diu](https://www.linkedin.com/company/gcpc-diu)
-    *   📢 **Telegram Announcements:** Sky Blue (`#0088CC`) — [diugcpc](https://t.me/diugcpc)
+This interactive suite lets club executives customize event details, see real-time updates in a side-by-side desktop/mobile previewer, and instantly compile/export email-safe, inline-styled HTML ready for deployment.
 
 ---
 
-## 🚀 How to Run Locally
+## 🎨 Premium Features I Implemented
 
-You can launch this builder dashboard locally on your Mac with absolute ease:
+### 1. ⚙️ Real-Time Interactive Builder Studio
+*   A responsive split-pane editor displaying standard input controls on the left and a live-rendering, fully reactive email preview iframe on the right.
+*   **Dual Viewports:** Switch instantly between a **Desktop Preview** and a **Mobile Viewport** with single-tap responsiveness.
+*   Dynamic rule builder that lets you add, edit, or remove custom event instructions and eligibility rules in real-time.
 
-### 1. Install Server Dependencies
-Open your shell in the workspace directory and install the lightweight Node.js requirements:
+### 2. 📅 Premium Registration Deadline Card
+*   Renders a beautiful, high-contrast, inline-styled registration deadline block:
+    `📅 Registration Closes On: [Month Date, Year (Hour:Minute AM/PM)]`
+*   Features a premium soft light background (`#f8fafc`), gold left-accent border (`#e08b00`), and bold slate text (`#0f172a`), creating a clean, modern aesthetic with zero dependency on slow-loading external images or unstable timers.
+*   **Dynamic Visibility:** If no deadline is specified in the controls, the card completely omits itself from both the preview and exported HTML.
+
+### 3. 🔒 Robust Light-Mode Style Locking
+*   **The Inversion Problem**: Gmail and Apple Mail on dark-mode devices tend to invert background colors aggressively, which often turns the transparent GCPC logo invisible.
+*   **My Solution**: 
+    *   I locked the entire email template to **permanent light mode** (clean white `#ffffff` body cards and `#f1f5f9` page backdrops) using strict `!important` inline style overrides.
+    *   Implemented precise **Gmail Android `[data-ogsc]` dark-mode kill switches** in the `<style>` header.
+    *   Designed a custom solid-white logo capsule (`.white-capsule`) that wraps the transparent logos, preventing transparent text from washing out when system-wide dark mode is toggled.
+
+### 4. 🔗 One-Click Code Compilation
+*   Compiles and inline-styles all elements into a single email-client-compatible HTML template with a single click of the **"Copy Email HTML"** button.
+*   Allows direct template downloading via the **"Download Template"** option.
+
+### 5. 💼 Professional Footer & Branding
+*   Swapped in custom circular, high-contrast social badges including Web, Facebook, Instagram, LinkedIn, and Telegram.
+*   Preserved original, unmodified green-and-teal varsity colors for Daffodil International University and the CSE Department footer stamps.
+
+---
+
+## 🛠️ Technologies & Tools I Used
+
+To build this email builder from the ground up, I leveraged a sleek, modern, and lightweight technical stack:
+
+1.  **Frontend Core Logic**:
+    *   **HTML5**: Used for the structural layout of the editor dashboard and the complex tabular grid system of the responsive email template.
+    *   **Vanilla CSS3**: Engineered the premium sidebar layout, dark-mode builder dashboard aesthetic, viewport switching controls, custom micro-animations, and glassmorphism styling.
+    *   **Vanilla JavaScript (ES6+)**: Developed the entire state-management engine, real-time iframe preview synchronizer, custom dynamic date parser, and clipboard-copy compiler.
+2.  **Backend & Server**:
+    *   **Node.js**: Powering the local server runtime.
+    *   **Express.js**: Serving static assets, routing index views, and hosting the dashboard locally.
+3.  **Local Assets**:
+    *   Self-contained official high-resolution assets for GCPC, DIU, and CSE logos stored directly in the `/assets` workspace directory.
+
+---
+
+## 🚀 How to Run My Builder Locally
+
+You can launch this builder locally on your computer in just a few simple steps:
+
+### 1. Install Dependencies
+Open your terminal in the project directory and install the lightweight server components:
 ```bash
 npm install
 ```
 
-### 2. Start the Development Server
-Run the startup script:
+### 2. Start the Server
+Run the local startup script:
 ```bash
 npm start
 ```
-*The terminal will bind to `localhost:5050` (or your secondary fallback port).*
+*The local development server will start successfully on port `5050`.*
 
-### 3. Open the Dashboard Studio
-Open your Google Chrome browser and navigate to:
+### 3. Open the Workspace
+Open Google Chrome and navigate to:
 ```url
-http://localhost:5050/
+http://localhost:5050
 ```
-*The responsive drag-and-preview dashboard will render instantly, loaded with your pre-populated GCPC event information!*
+*The responsive interactive studio will open immediately, loaded with default event presets.*
 
 ---
 
-## ✉️ The Chrome "Inspect Element" Email Send Guide
+## ✉️ The "Inspect Element" Sending Guide
 
-If you are using Google Chrome and **Gmail** to send these templates, use this simple inspect trick to inject the HTML without using external newsletter services:
-1. Open the local dashboard, customize your bootcamp event details, and click **"Copy Email HTML"**.
-2. Open **Gmail** in your browser, click **Compose**, and type a distinct placeholder in the email body (e.g., `[GCPC_RENDER_HTML]`).
-3. Right-click the placeholder word `[GCPC_RENDER_HTML]` and select **Inspect** to open the developer pane.
-4. Right-click the active `<div>` or `<span>` node containing your placeholder in the DOM tree, and choose **Edit as HTML**.
-5. Select all placeholder text, paste your copied email template code, and close the DevTools pane.
-6. *Presto!* The gorgeous, fully styled GCPC email renders immediately inside Gmail's Compose window, ready to be sent to your mailing list!
+To send this email directly through Gmail (without using external email marketing platforms like Mailchimp):
+1. In the builder, customize your event flyer, text, and details.
+2. Click **"Copy Email HTML"** to copy the compiled template code.
+3. Open **Gmail** in your browser, click **Compose**, and type a placeholder word in the body text (e.g. `[GCPC_EMAIL]`).
+4. Right-click the word `[GCPC_EMAIL]` and select **Inspect** to open Developer Tools.
+5. In the DOM tree panel, right-click the `<div>` or `<span>` node containing your placeholder, and choose **Edit as HTML**.
+6. Select the placeholder text, paste your copied email template code, and close the Developer Tools panel.
+7. *Presto!* The gorgeous, fully compiled light-locked GCPC email template instantly renders inside Gmail, ready to be sent to your mailing lists!
 
 ---
 
-## 📁 Repository Structure
+## 📁 Project Structure
 
 ```
-/Users/fatehahossainanushka/Documents/GCPC-MAIL/
-├── index.html          # Dynamic Template Builder Studio (Inputs, Previewer, Compiler)
+GCPC-MAIL/
+├── index.html          # Dynamic Template Builder Studio (HTML5/CSS3/Vanilla JS)
 ├── server.js           # Lightweight Express web server
 ├── package.json        # Startup script configurations & dependencies
-├── README.md           # This premium workspace documentation file
-└── assets/             # Raw local branding logo files
+├── README.md           # This project documentation file
+└── assets/             # Brand logos & TrueType Roboto font assets
 ```
 
-Developed with 💙 by **DIU Girls' Computer Programming Club**.
+---
+
+Designed and developed with 💙 by **Fateha Hossain Anushka**, President of **DIU Girls' Computer Programming Club**.
