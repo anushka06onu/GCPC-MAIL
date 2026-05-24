@@ -1448,31 +1448,32 @@
         `;
       } else if (activePreviewTheme === 'dark') {
         style.innerHTML = `
-          /* Force Dark Mode Overrides */
+          /* Force Dark Mode Overrides — locks entire email card to white, outer canvas to dark */
           body, center, .main-bg {
             background-color: #070b13 !important;
           }
           .responsive-table, .main-body-card, .mobile-padding {
-            background-color: #0d1526 !important;
-            border-color: rgba(255, 255, 255, 0.08) !important;
+            background-color: #ffffff !important;
+            background: linear-gradient(#ffffff, #ffffff) !important;
+            border-color: #e2e8f0 !important;
           }
           .text-slate {
-            color: #f1f5f9 !important;
+            color: #0f172a !important;
           }
           .text-muted {
-            color: #94a3b8 !important;
+            color: #475569 !important;
           }
           .text-gold {
-            color: #fbbf24 !important;
+            color: #e08b00 !important;
           }
           .link-blue {
-            color: #fbbf24 !important;
+            color: #0a307a !important;
           }
           .hero-title-text {
             color: #ffffff !important;
           }
           .hero-subtitle-text {
-            color: #fbbf24 !important;
+            color: #e08b00 !important;
           }
           .white-capsule, .white-capsule td {
             background-color: #ffffff !important;
@@ -1486,11 +1487,12 @@
             background: #0a307a !important;
           }
           .info-card-bg {
-            background-color: #131f37 !important;
-            border-color: rgba(255, 255, 255, 0.08) !important;
+            background-color: #f8fafc !important;
+            background: linear-gradient(#f8fafc, #f8fafc) !important;
+            border-color: #e2e8f0 !important;
           }
           .info-border {
-            border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+            border-bottom-color: #e2e8f0 !important;
           }
         `;
       }
@@ -2110,6 +2112,48 @@
     [data-ogsc] .logo-header-row,
     [data-ogsc] .logo-header-row td { background-color: #ffffff !important; background: linear-gradient(#ffffff, #ffffff) !important; background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important; }
     [data-ogsc] .brand-blue-bg    { background-color: #0a307a !important; background: linear-gradient(#0a307a, #0a307a) !important; }
+
+    /* Force Light Mode in prefers-color-scheme: dark clients */
+    @media (prefers-color-scheme: dark) {
+      body, center, .main-bg {
+        background-color: #ffffff !important;
+        background-image: url('https://raw.githubusercontent.com/anushka06onu/GCPC-MAIL/main/assets/white-pixel.png') !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+      }
+      .responsive-table, .main-body-card, .mobile-padding {
+        background-color: #ffffff !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+        border-color: #e2e8f0 !important;
+      }
+      .text-slate {
+        color: #0f172a !important;
+      }
+      .text-muted {
+        color: #475569 !important;
+      }
+      .text-gold {
+        color: #e08b00 !important;
+      }
+      .link-blue {
+        color: #0a307a !important;
+      }
+      .info-card-bg {
+        background-color: #f8fafc !important;
+        background: linear-gradient(#f8fafc, #f8fafc) !important;
+        border-color: #e2e8f0 !important;
+      }
+      .info-border {
+        border-bottom-color: #e2e8f0 !important;
+      }
+      .white-capsule, .white-capsule td {
+        background-color: #ffffff !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+      }
+      .logo-header-row, .logo-header-row td {
+        background-color: #ffffff !important;
+        background: linear-gradient(#ffffff, #ffffff) !important;
+      }
+    }
 
     /* iOS Blue Links */
     a[x-apple-data-detectors] {
